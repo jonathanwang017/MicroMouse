@@ -31,6 +31,38 @@ void turnLeft() {
   digitalWrite(motorRight, LOW);
 }
 
+
+int manhattanDist(int x1, int y1, int x2, int y2){
+  return abs(x1-x2)+abs(y1-y2);
+}
+
+/* ***Outline*** of algorithm for navigating to center of 16x16 maze
+1) Move to cell which it has gone to least
+2) Move to the cell that has minimum cell value
+3) If possible the robot must try to go straight.
+*/
+void floodFill(){
+  int maze[16][16];
+  
+  /*Given current point in maze, return neighbor {N,S,E,W} that 
+  should take the mouse closer to the center.*/
+  char closestNeighbor(int[2] currentSpace) {
+    //To-do
+  }
+  
+  // initialize distance from center as if there are no walls
+  for (int i=0; i<16; i++){
+    for (int j=0; j<16; j++){
+      maze[i][j]=min(manhattanDist(i, j, 8, 8), manhattanDist(i, j, 8, 9),
+        manhattanDist(i, j, 9, 8), manhattanDist(i, j 9, 9));
+    }
+  }
+  
+  /* Assume mouse is always in the SW corner of maze and that it is
+  facing the opening to the North */
+  
+  
+}
 // the loop routine runs over and over again forever:
 void loop() {
   turnLeft();
