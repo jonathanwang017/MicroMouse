@@ -8,21 +8,31 @@
 // Pin 13 has an LED connected on most Arduino boards.
 // give it a name:
 int led = 13;
-int motor = 1;
+int motorLeft = 1;
+int motorRight = 3;
 
 // the setup routine runs once when you press reset:
 void setup() {                
   // initialize the digital pin as an output.
   pinMode(led, OUTPUT);    
-  pinMode(motor, OUTPUT); 
+  pinMode(motorLeft, OUTPUT); 
+  pinMode(motorRight, OUTPUT);
+}
+
+void turnRight() {
+  digitalWrite(motorLeft, HIGH);
+  delay(1000);
+  digitalWrite(motorLeft, LOW);
+}
+
+void turnLeft() {
+  digitalWrite(motorRight, HIGH);
+  delay(1000);
+  digitalWrite(motorRight, LOW);
 }
 
 // the loop routine runs over and over again forever:
 void loop() {
-  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  digitalWrite(motor, HIGH);
-  delay(1000);               // wait for a second
-  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-  digitalWrite(motor, LOW);
-  delay(1000);               // wait for a second
+  turnLeft();
+  turnRight();
 }
