@@ -27,7 +27,14 @@ void moveForward() {
   digitalWrite(motorRight, LOW);
   digitalWrite(motorLeft, LOW);
 }
+void moveBackward() {
+  //stuff
+}
+ 
+void turn180() {
+  //stuff
 
+}
 
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
@@ -36,8 +43,53 @@ int manhattanDist(int x1, int y1, int x2, int y2) {
 
 /*Given current point in maze, return neighbor {N,S,E,W} that 
 should take the mouse closer to the center.*/
-char closestNeighbor(int x, int y) {
-  //To-do
+char[4] closestNeighbor(int maze[16][16], int currentSpace[2]) {
+  int N = maze[currentSpace[0]+1][currentSpace[1]];
+  int S = maze[currentSpace[0]-1][currentSpace[1]];
+  int E = maze[currentSpace[0]][currentSpace[1]+1];
+  int W = maze[currentSpace[0]][currentSpace[1]-1];
+  //There's definitely more C++ ways to do this... but it's
+  //late and I don't want to think about new syntax
+  //char arrays are initalized to zeros, right?
+  int neighborVals[4] = {N, S, E, W};
+  char neighborDirections[4] = {'N', 'S', 'E', 'W'};
+  int closest = minimize(N, S, E, W);
+  char closestNeighbors[4];
+  for (int i=0; i<4; i++) { 
+    if (neighborVals[i] == closest) {
+      closestNeighbors[i] = neighborDirections[i];
+    }
+  }
+  return closestNeighbors;
+}
+
+char chooseMove(char fwdDir, int curSpace[2], map<char, char> directions) {
+  //start this with face N
+  char facing = fwdDir;
+  char moves[4] = closestNeighbor(curspace);
+  for (int i=0; i<4; i++) {
+    if (moves[i] == facing) {
+      return 'F';
+    }
+  }
+  //chose arbitrary from moves, would need to iterate through again
+}
+
+void makeMove(char action) {
+  if (action == "L") {
+    turnLeft();
+  }
+  else if (action == "R") {
+    turnRight();
+  }
+  else if (action == "B") {
+    turn180();
+  }
+  moveForward();
+}
+map<char, char> updateMoves(char curFacing){
+  //stuff
+  //return the new set of ways to move, eg if now facing S, then {"S":"F", "E":"L"} etc
 }
 
 int minimize(int left, int right, int forward, int backward) {
@@ -70,7 +122,15 @@ void floodFill() {
   
   /* Assume mouse is always in the SW corner of maze and that it is
   facing the opening to the North */
-  
+  int curSpace[2] = {0, 16};
+  char facing = 'N';
+  map<char, char> moves;// = calcMoves('N');
+  while (maze[curSpace[0]][curSpace[1]] != 0) {
+    char nextMove = choseMove(facing, curSpace, moves);
+//    facing = //how to update this
+//    moves = //also this
+//    curSpace = //and this  
+  }
   
 }
 // the loop routine runs over and over again forever:
