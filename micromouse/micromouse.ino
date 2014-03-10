@@ -87,7 +87,7 @@ void makeMove(char action) {
   }
   moveForward();
 }
-map<char, char> updateMoves(char curFacing){
+map<char, char> updateMoves(char curFacing) {
   //stuff
   //return the new set of ways to move, eg if now facing S, then {"S":"F", "E":"L"} etc
 }
@@ -126,7 +126,7 @@ void floodFill() {
   char facing = 'N';
   map<char, char> moves;// = calcMoves('N');
   while (maze[curSpace[0]][curSpace[1]] != 0) {
-    char nextMove = choseMove(facing, curSpace, moves);
+    char nextMove = chooseMove(facing, curSpace, moves);
 //    facing = //how to update this
 //    moves = //also this
 //    curSpace = //and this  
