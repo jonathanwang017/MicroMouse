@@ -20,7 +20,7 @@
             <div id = "hardware_sect">
                 <h3 id = "parts_header" class = "subsect_header">Parts List</h3>
                 <div id = "parts_sect">
-                    <p id = parts_text>These are the components we obtained to build the robot:</p>
+                    <p class = parts_text>These are the components we obtained to build the robot:</p>
                     <table id = "parts_table">
                     <tr>
                         <th class = "parts_table">Item</th>
@@ -69,7 +69,7 @@
                     </tr>
                     <tr>
                         <td class = "parts_table"><a href = http://www.pololu.com/product/791>Boost Regulator</a></td>
-                        <td class = "parts_table">adjusts voltage>/td>
+                        <td class = "parts_table">adjusts voltage</td>
                         <td class = "parts_table">$12</td>
                     </tr>
                     <tr>
@@ -91,35 +91,43 @@
                 </div>
                 <h3 id = "building_header" class = "subsect_header">Construction</h3>
                 <div id = "building_sect">
-                    <p id = "building_text">building</p>
-                    <img src = "http://ieee.ucsd.edu/projects/micromouse/image007.jpg">
+                    <p class = "building_text">A model mouse that we are basing our project off of: </p>
+                    <img src = "pics/model_mouse.jpg">
+                    <p class = "building_text">(Building not yet started)</p>
                 </div>
                 <h3 id = "wiring_header" class = "subsect_header">Wiring</h3>
                 <div id = "wiring_sect">
-                    <p id = "wiring_text">wiring</p>
+                    <p class = "wiring_text">We do, however, have some basic wiring going on.</p>
+                    <p class = "wiring_text">Here is a super rough block diagram of final wiring: </p>
+                    <img src = "pics/block_diagram.png" width="400px" height="250px">
                 </div>
             </div>
             <h2 id = "software_header" class = "sect_header">Software</h2>
             <div id = "software_sect">
                 <h3 id = "operations_header" class = "subsect_header">Basic Operation</h3>
                 <div id = "operations_sect">
-                    <p id = "operations_text">Basic operations include motor ouotput, sensor input, etc.</p>
-                    <div id = "operations_subsect">
+                    <p class = "operations_text">Basic operations include motor ouotput, sensor input, etc.</p>
+                    <div id = "operations_subsect_left">
                         <img src = "pics/code_snippet.png">
+                    </div>
+                    <div id = "operations_subsect_right">
+                        <p><br>Completed:<br>&nbsp Motor Functions<br><br><br>Incomplete:<br>&nbsp Sensors<br>&nbsp Gyro Turning</p>
+                    </div>
+                    <div class = "div_buffer">
                     </div>
                 </div>
                 <h3 id = "algorithms_header" class = "subsect_header">Algorithms</h3>
                 <div id = "algorithms_sect">
-                    <p id = "algorithms_text">We are using an implementation of the floodfill algorithm (still figuring it out though).</p>
+                    <p class = "algorithms_text">We are using an implementation of the floodfill algorithm (still figuring it out though).</p>
                     <div id = "algorithms_subsect_left">
-                        <p>It works sort of like this: </p>
-                        <img src = "http://inventwithpython.com/floodfill/zombie1.gif">
+                        <p class = "algorithms_text">It works sort of like this: </p>
+                        <img src = "pics/zombie_fill.gif">
                     </div>
                     <div id = "algorithms_subsect_right">
-                        <p>In perspective of the MicroMouse maze (starting from bottom left): </p>
-                        <img src = "http://students.iitk.ac.in/projects/_media/jap.gif">
+                        <p class = "algorithms_text">In perspective of the MicroMouse maze<br>(starting from bottom left): </p>
+                        <img src = "pics/floodfill_example.gif" width="300px" height="300px">
                     </div>
-                    <div id = "algorithms_buffer">
+                    <div class = "div_buffer">
                     </div>
                 </div>
             </div>
