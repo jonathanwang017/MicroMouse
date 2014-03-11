@@ -1,13 +1,18 @@
-
 html, body
 {
-    background-color: GRAY;
+    background-color: WHITE;
+    margin: 0;
+}
+p
+{
+    font-family: 'Duru Sans', sans-serif;
+    font-size: 14px;
 }
 #container
 {
     background-color: WHITE;
     height: auto;
-    padding: 5px
+    padding: 0px;
 }
 #header
 {
@@ -64,6 +69,8 @@ html, body
     border-collapse: collapse;
     background-color: WHITE;
     width: 500px;
+    font-family: 'Duru Sans', sans-serif;
+    font-size: 12px;
 }
 .parts_table
 {
@@ -143,7 +150,17 @@ html, body
     padding: 20px;
     padding-left: 50px;
 }
+#git_link
+{
+    color: #27A4DB;
+    text-decoration: none;
+}
+#git_link:hover
+{
+    text-decoration: underline;
+}
 #bottom_buffer
 {
-  height: 200px;
+    text-align: center;
+    height: 200px;
 }
