@@ -104,12 +104,32 @@ html, body
     height: auto;
     padding: 10px;
 }
+#operations_subsect
+{
+    margin-left: 30px;
+}
 #algorithms_sect
 {
     background-color: GOLD;
     display: none;
     height: auto;
     padding: 10px;
+}
+#algorithms_subsect_left
+{
+    margin-left: 30px;
+    width: 35%;
+    float: left;
+}
+#algorithms_subsect_right
+{
+    width: 40%;
+    float: left;
+}
+#algorithms_buffer
+{
+    clear: both;
+    height: 10px;
 }
 #misc_header
 {
