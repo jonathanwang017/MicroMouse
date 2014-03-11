@@ -1,0 +1,129 @@
+
+html, body
+{
+    background-color: GRAY;
+}
+#container
+{
+    background-color: WHITE;
+    height: auto;
+    padding: 5px
+}
+#header
+{
+    background-color: BLUE;
+    padding: 20px
+}
+#header_text
+{
+    text-align: center;
+    font-family: 'Bubbler One', sans-serif;
+    font-size: 60px;
+    margin: 0;
+}
+#header_subtitle
+{
+    text-align: center;
+    font-family: 'Bubbler One', sans-serif;
+    font-size: 30px;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+.sect_header</p>
+{
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-size: 30px;
+}
+.subsect_header
+{
+    font-family: 'Duru Sans', sans-serif;
+    font-size: 20px;
+}
+#hardware_header
+{
+    margin-left: 30px;
+    margin-bottom: 0;
+}
+#hardware_sect
+{
+    background-color: GOLD;
+    height: auto;
+    padding: 20px;
+    padding-left: 50px;
+}
+#parts_sect
+{
+    background-color: BLUE;
+    display: none;
+    height: auto;
+    padding: 10px;
+}
+#parts_table
+{
+    border: 1px solid BLACK;
+    border-collapse: collapse;
+    background-color: WHITE;
+    width: 500px;
+}
+.parts_table
+{
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: auto;
+}
+#building_sect
+{
+    background-color: BLUE;
+    display: none;
+    height: auto;
+    padding: 10px;
+}
+#wiring_sect
+{
+    background-color: BLUE;
+    display: none;
+    height: auto;
+    padding: 10px;
+}
+#software_header
+{
+    margin-left: 30px;
+    margin-bottom: 0;
+}
+#software_sect
+{
+    background-color: BLUE;
+    height: auto;
+    padding: 20px;
+    padding-left: 50px;
+}
+#operations_sect
+{
+    background-color: GOLD;
+    display: none;
+    height: auto;
+    padding: 10px;
+}
+#algorithms_sect
+{
+    background-color: GOLD;
+    display: none;
+    height: auto;
+    padding: 10px;
+}
+#misc_header
+{
+    margin-left: 30px;
+    margin-bottom: 0;
+}
+#misc_sect
+{
+    background-color: GOLD;
+    height: auto;
+    padding: 20px;
+    padding-left: 50px;
+}
+#bottom_buffer
+{
+  height: 200px;
+}
