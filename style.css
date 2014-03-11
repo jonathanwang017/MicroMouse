@@ -1,13 +1,18 @@
-
 html, body
 {
-    background-color: GRAY;
+    background-color: WHITE;
+    margin: 0;
+}
+p
+{
+    font-family: 'Duru Sans', sans-serif;
+    font-size: 14px;
 }
 #container
 {
     background-color: WHITE;
     height: auto;
-    padding: 5px
+    padding: 0px;
 }
 #header
 {
@@ -50,6 +55,7 @@ html, body
     height: auto;
     padding: 20px;
     padding-left: 50px;
+    padding-right: 50px;
 }
 #parts_sect
 {
@@ -60,10 +66,12 @@ html, body
 }
 #parts_table
 {
-    border: 1px solid BLACK;
+    border: 2px solid BLACK;
     border-collapse: collapse;
     background-color: WHITE;
     width: 500px;
+    font-family: 'Duru Sans', sans-serif;
+    font-size: 12px;
 }
 .parts_table
 {
@@ -96,6 +104,7 @@ html, body
     height: auto;
     padding: 20px;
     padding-left: 50px;
+    padding-right: 50px;
 }
 #operations_sect
 {
@@ -104,9 +113,16 @@ html, body
     height: auto;
     padding: 10px;
 }
-#operations_subsect
+#operations_subsect_left
 {
     margin-left: 30px;
+    width: 30%;
+    float: left;
+}
+#operations_subsect_right
+{
+    width: 25%;
+    float: left;
 }
 #algorithms_sect
 {
@@ -126,11 +142,6 @@ html, body
     width: 40%;
     float: left;
 }
-#algorithms_buffer
-{
-    clear: both;
-    height: 10px;
-}
 #misc_header
 {
     margin-left: 30px;
@@ -142,8 +153,24 @@ html, body
     height: auto;
     padding: 20px;
     padding-left: 50px;
+    padding-right: 50px;
+}
+#git_link
+{
+    color: #27A4DB;
+    text-decoration: none;
+}
+#git_link:hover
+{
+    text-decoration: underline;
 }
 #bottom_buffer
 {
-  height: 200px;
+    text-align: center;
+    height: 200px;
+}
+.div_buffer
+{
+    clear: both;
+    height: 10px;
 }
