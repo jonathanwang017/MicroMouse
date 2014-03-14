@@ -3,6 +3,14 @@ int led = 13;
 int motorLeft = 1;
 int motorRight = 3;
 
+int path_x[256];
+int path_y[256];
+int pathLength = 0;
+int cur_x = 0;
+int cur_y = 0;
+int map[16][16];
+char facing = 'N';
+
 // the setup routine runs once when you press reset:
 void setup() {                
   pinMode(led, OUTPUT);    
@@ -26,19 +34,58 @@ void moveForward() {
   delay(1000);
   digitalWrite(motorRight, LOW);
   digitalWrite(motorLeft, LOW);
-}
-void moveBackward() {
-  //stuff
+  trackPath();
+  switch(facing) {
+    case 'N':
+      cur_y--;
+      break;
+    case 'S':
+      cur_y++;
+      break;
+    case 'E':
+      cur_x++;
+      break;
+    case 'W':
+      cur_x--;
+      break;
+  }
 }
  
-void turn180() {
+void reverse() {
   //stuff
 
+}
+
+
+int minimize(int left, int right, int forward, int backward) {
+  int directions[4] = {left, right, forward, backward};
+  int min = 0;
+  for (int i=0; i<4; i++) {
+    if (directions[i] < min) {
+      min = directions[i];
+    }
+  }
+  return min;
 }
 
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
 }
+
+void initializeGrid() {
+   for (int i=0; i<16; i++) {
+    for (int j=0; j<16; j++) {
+      maze[i][j] = minimize(manhattanDist(i, j, 7, 7), manhattanDist(i, j, 7, 8), manhattanDist(i, j, 8, 7), manhattanDist(i, j, 8, 8));
+    }
+  }
+}
+
+void trackPath() {
+   path_x[pathLength] = cur_x;
+   path_y[pathLength] = cur_y;
+   pathLength++;
+}
+
 
 
 /*Given current point in maze, return neighbor {N,S,E,W} that 
@@ -76,31 +123,16 @@ char chooseMove(char fwdDir, int curSpace[2], map<char, char> directions) {
 }
 
 void makeMove(char action) {
-  if (action == "L") {
+  if (action == 'L') {
     turnLeft();
   }
-  else if (action == "R") {
+  else if (action == 'R') {
     turnRight();
   }
-  else if (action == "B") {
+  else if (action == 'B') {
     turn180();
   }
   moveForward();
-}
-map<char, char> updateMoves(char curFacing) {
-  //stuff
-  //return the new set of ways to move, eg if now facing S, then {"S":"F", "E":"L"} etc
-}
-
-int minimize(int left, int right, int forward, int backward) {
-  int directions[4] = {left, right, forward, backward};
-  int min = 0;
-  for (int i=0; i<4; i++) {
-    if (directions[i] < min) {
-      min = directions[i];
-    }
-  }
-  return min;
 }
 
 /* ***Outline*** of algorithm for navigating to center of 16x16 maze
@@ -110,13 +142,12 @@ int minimize(int left, int right, int forward, int backward) {
 */
 
 void floodFill() {
-  int maze[16][16];
 
   
   // initialize distance from center as if there are no walls
   for (int i=0; i<16; i++) {
     for (int j=0; j<16; j++) {
-      maze[i][j] = minimize(manhattanDist(i, j, 8, 8), manhattanDist(i, j, 8, 9), manhattanDist(i, j, 9, 8), manhattanDist(i, j, 9, 9));
+      maze[i][j] = minimize(manhattanDist(i, j, 7, 7), manhattanDist(i, j, 7, 8), manhattanDist(i, j, 8, 7), manhattanDist(i, j, 8, 8));
     }
   }
   
