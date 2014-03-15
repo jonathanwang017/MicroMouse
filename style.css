@@ -1,23 +1,37 @@
 html, body
 {
-    background-color: WHITE;
+    background-color: #5EC4CD;
     margin: 0;
+    padding: 0;
 }
 p
 {
     font-family: 'Duru Sans', sans-serif;
     font-size: 14px;
 }
+#header_div
+{
+    background-color: #5EC4CD;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
 #container
 {
-    background-color: WHITE;
+    background-color: #C5F0ED;
     height: auto;
-    padding: 0px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 30px;
+    padding-bottom: 60px;
+    margin-left: 0;
+    margin-right: 0;
 }
 #header
 {
-    background-color: BLUE;
-    padding: 20px
+    background-color: #015C65;
+    padding: 20px;
+
 }
 #header_text
 {
@@ -34,13 +48,21 @@ p
     margin-bottom: 0;
     margin-top: 10px;
 }
+.sect_div
+{
+    background-color: #028E9B;
+    margin-top: 30px;
+    text-align: center;
+}
 .sect_header
 {
-    font-family: 'Sue Ellen Francisco', cursive;
-    font-size: 30px;
+    margin: 0;
+    font-family: 'Bubbler One', sans-serif;
+    font-size: 40px;
 }
 .subsect_header
 {
+    margin-bottom: 0;
     font-family: 'Duru Sans', sans-serif;
     font-size: 20px;
 }
@@ -51,18 +73,20 @@ p
 }
 #hardware_sect
 {
-    background-color: GOLD;
+    background-color: #35C0CD;
     height: auto;
     padding: 20px;
     padding-left: 50px;
     padding-right: 50px;
+    padding-bottom: 40px;
 }
 #parts_sect
 {
-    background-color: BLUE;
+    background-color: #35C0CD;
     display: none;
     height: auto;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #parts_table
 {
@@ -81,17 +105,19 @@ p
 }
 #building_sect
 {
-    background-color: BLUE;
+    background-color: #35C0CD;
     display: none;
     height: auto;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #wiring_sect
 {
-    background-color: BLUE;
+    background-color: #35C0CD;
     display: none;
     height: auto;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #software_header
 {
@@ -100,23 +126,25 @@ p
 }
 #software_sect
 {
-    background-color: BLUE;
+    background-color: #35C0CD;
     height: auto;
     padding: 20px;
     padding-left: 50px;
     padding-right: 50px;
+    padding-bottom: 40px;
 }
 #operations_sect
 {
-    background-color: GOLD;
+    background-color: #35C0CD;
     display: none;
     height: auto;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #operations_subsect_left
 {
     margin-left: 30px;
-    width: 30%;
+    width: 35%;
     float: left;
 }
 #operations_subsect_right
@@ -126,15 +154,16 @@ p
 }
 #algorithms_sect
 {
-    background-color: GOLD;
+    background-color: #35C0CD;
     display: none;
     height: auto;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 #algorithms_subsect_left
 {
     margin-left: 30px;
-    width: 35%;
+    width: 45%;
     float: left;
 }
 #algorithms_subsect_right
@@ -149,7 +178,7 @@ p
 }
 #misc_sect
 {
-    background-color: GOLD;
+    background-color: #35C0CD;
     height: auto;
     padding: 20px;
     padding-left: 50px;
@@ -157,7 +186,7 @@ p
 }
 #git_link
 {
-    color: #27A4DB;
+    color: #35C0CD;
     text-decoration: none;
 }
 #git_link:hover
@@ -166,11 +195,22 @@ p
 }
 #bottom_buffer
 {
+    margin-bottom: 0;
+    background-color: #015C65;
+    padding: 20px;
     text-align: center;
-    height: 200px;
 }
 .div_buffer
 {
     clear: both;
     height: 10px;
+}
+#end_div
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+#endnote
+{
+    margin: 0;
 }
