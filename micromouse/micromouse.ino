@@ -12,22 +12,32 @@ int maze[16][16];
 char facing = 'N';
 
 // the setup routine runs once when you press reset:
-void setup() {                
-  pinMode(led, OUTPUT);    
+
+//initialize pins and setup maze with initial values
+void setup() {       
+  pinMode(led, OUTPUT);
   pinMode(motorLeft, OUTPUT); 
   pinMode(motorRight, OUTPUT);
+  initializeGrid();
 }
 
+//turn 90 degrees right (use gyro or calculate turning ratio)
 void turnRight() {
   digitalWrite(motorLeft, HIGH);
   delay(1000);
   digitalWrite(motorLeft, LOW);
 }
+
+//turn 90 degrees left
 void turnLeft() {
   digitalWrite(motorRight, HIGH);
   delay(1000);
   digitalWrite(motorRight, LOW);
 }
+
+//move forward 1 space (figure out distance)
+//add space to path
+//update direction facing
 void moveForward() {
   digitalWrite(motorRight, HIGH);
   digitalWrite(motorLeft, HIGH);
@@ -50,13 +60,8 @@ void moveForward() {
       break;
   }
 }
- 
-void reverse() {
-  //stuff
 
-}
-
-
+//min function that takes in 4 argument
 int minimize(int left, int right, int forward, int backward) {
   int directions[4] = {left, right, forward, backward};
   int min = 0;
@@ -68,10 +73,12 @@ int minimize(int left, int right, int forward, int backward) {
   return min;
 }
 
+//calculate manhattan distance between 2 points
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
 }
 
+//create initial maze with default values
 void initializeGrid() {
    for (int i=0; i<16; i++) {
     for (int j=0; j<16; j++) {
@@ -80,20 +87,23 @@ void initializeGrid() {
   }
 }
 
+//add current location to path
 void trackPath() {
    path_x[pathLength] = cur_x;
    path_y[pathLength] = cur_y;
    pathLength++;
 }
 
+//find neighboring space with smallest value
 char minNeighbor() {
-  int N = maze[cur_x+1][cur_y];
-  int S = maze[cur_x-1][cur_y];
-  int E = maze[cur_x][cur_y+1];
-  int W = maze[cur_x][cur_y-1];
-
+  int N = maze[cur_x][cur_y-1];
+  int S = maze[cur_x][cur_y+1];
+  int E = maze[cur_x+1][cur_y];
+  int W = maze[cur_x-1][cur_y];
   int minimum = minimize(N, S, E, W);
   char closestNeighbors[4];
+  
+  //return char corresponding to smallest value
   if (minimum == N) {
     return 'N';
   }
@@ -108,6 +118,11 @@ char minNeighbor() {
   }
 }
 
+
+//I'm pretty sure multiple switch statements is a sub optimal method so feel free to improve:
+
+//move forward in optimal direction
+//update facing direction
 char chooseMove() {
   char moveDir = minNeighbor();
   switch(facing) {
@@ -115,19 +130,23 @@ char chooseMove() {
       switch(moveDir) {
         case 'N':
           moveForward();
+          facing = 'N'
           break;
         case 'S':
           turnRight();
           turnRight();
           moveForward();
+          facing = 'S'
           break;
         case 'E':
           turnRight();
           moveForward();
+          facing = 'E'
           break;
         case 'W':
           turnLeft();
           moveForward();
+          facing = 'W'
           break;  
       }
     case 'S':
@@ -136,17 +155,21 @@ char chooseMove() {
           turnRight();
           turnRight();
           moveForward();
+          facing = 'N'
           break;
         case 'S':
           moveForward();
+          facing = 'S'
           break;
         case 'E':
           turnLeft();
           moveForward();
+          facing = 'E'
           break;
         case 'W':
           turnRight();
           moveForward();
+          facing = 'W'
           break;  
       }
     case 'E':
@@ -154,18 +177,22 @@ char chooseMove() {
         case 'N':
           turnLeft();
           moveForward();
+          facing = 'N'
           break;
         case 'S':
           turnRight();
           moveForward();
+          facing = 'S'
           break;
         case 'E':
           moveForward();
+          facing = 'E'
           break;
         case 'W':
           turnRight();
           turnRight();
           moveForward();
+          facing = 'W'
           break;  
       }
     case 'W':
@@ -173,18 +200,22 @@ char chooseMove() {
         case 'N':
           turnRight();
           moveForward();
+          facing = 'N'
           break;
         case 'S':
           turnLeft();
           moveForward();
+          facing = 'S'
           break;
         case 'E':
           turnRight();
           turnRight();
           moveForward();
+          facing = 'E'
           break;
         case 'W':
           moveForward();
+          facing = 'W'
           break;  
       }
   }
