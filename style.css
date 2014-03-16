@@ -65,6 +65,8 @@ p
     margin-bottom: 0;
     font-family: 'Duru Sans', sans-serif;
     font-size: 20px;
+    text-decoration: underline;
+    font-weight: bolder;
 }
 #hardware_header
 {
