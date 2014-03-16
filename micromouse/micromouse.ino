@@ -118,35 +118,38 @@ char minNeighbor() {
   }
 }
 
+//check if there is a wall in front of mouse
+boolean checkWall() {
+  return false;
+}
+
 
 //I'm pretty sure multiple switch statements is a sub optimal method so feel free to improve:
 
-//move forward in optimal direction
+//!!!!uggh actually this does not take walls into account well...so needs fixing
+
+//turn to optimal direction
 //update facing direction
-char chooseMove() {
+char chooseDirection() {
   char moveDir = minNeighbor();
   switch(facing) {
     case 'N':
       switch(moveDir) {
         case 'N':
-          moveForward();
-          facing = 'N'
+          facing = 'N';
           break;
         case 'S':
           turnRight();
           turnRight();
-          moveForward();
-          facing = 'S'
+          facing = 'S';
           break;
         case 'E':
           turnRight();
-          moveForward();
-          facing = 'E'
+          facing = 'E';
           break;
         case 'W':
           turnLeft();
-          moveForward();
-          facing = 'W'
+          facing = 'W';
           break;  
       }
     case 'S':
@@ -154,73 +157,66 @@ char chooseMove() {
         case 'N':
           turnRight();
           turnRight();
-          moveForward();
-          facing = 'N'
+          facing = 'N';
           break;
         case 'S':
-          moveForward();
-          facing = 'S'
+          facing = 'S';
           break;
         case 'E':
           turnLeft();
-          moveForward();
-          facing = 'E'
+          facing = 'E';
           break;
         case 'W':
           turnRight();
-          moveForward();
-          facing = 'W'
+          facing = 'W';
           break;  
       }
     case 'E':
       switch(moveDir) {
         case 'N':
           turnLeft();
-          moveForward();
-          facing = 'N'
+          facing = 'N';
           break;
         case 'S':
           turnRight();
-          moveForward();
-          facing = 'S'
+          facing = 'S';
           break;
         case 'E':
-          moveForward();
-          facing = 'E'
+          facing = 'E';
           break;
         case 'W':
           turnRight();
           turnRight();
-          moveForward();
-          facing = 'W'
+          facing = 'W';
           break;  
       }
     case 'W':
       switch(moveDir) {
         case 'N':
           turnRight();
-          moveForward();
-          facing = 'N'
+          facing = 'N';
           break;
         case 'S':
           turnLeft();
-          moveForward();
-          facing = 'S'
+          facing = 'S';
           break;
         case 'E':
           turnRight();
           turnRight();
-          moveForward();
-          facing = 'E'
+          facing = 'E';
           break;
         case 'W':
-          moveForward();
-          facing = 'W'
+          facing = 'W';
           break;  
       }
   }
 }
 
+
+//double check selected move and move forward
+void makeMove() {
+  moveForward();
+}
 
 void loop() {
 
