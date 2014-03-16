@@ -8,7 +8,7 @@ int path_y[256];
 int pathLength = 0;
 int cur_x = 0;
 int cur_y = 0;
-int map[16][16];
+int maze[16][16];
 char facing = 'N';
 
 // the setup routine runs once when you press reset:
@@ -86,85 +86,111 @@ void trackPath() {
    pathLength++;
 }
 
+char minNeighbor() {
+  int N = maze[cur_x+1][cur_y];
+  int S = maze[cur_x-1][cur_y];
+  int E = maze[cur_x][cur_y+1];
+  int W = maze[cur_x][cur_y-1];
 
-
-/*Given current point in maze, return neighbor {N,S,E,W} that 
-should take the mouse closer to the center.*/
-char[4] closestNeighbor(int maze[16][16], int currentSpace[2]) {
-  int N = maze[currentSpace[0]+1][currentSpace[1]];
-  int S = maze[currentSpace[0]-1][currentSpace[1]];
-  int E = maze[currentSpace[0]][currentSpace[1]+1];
-  int W = maze[currentSpace[0]][currentSpace[1]-1];
-  //There's definitely more C++ ways to do this... but it's
-  //late and I don't want to think about new syntax
-  //char arrays are initalized to zeros, right?
-  int neighborVals[4] = {N, S, E, W};
-  char neighborDirections[4] = {'N', 'S', 'E', 'W'};
-  int closest = minimize(N, S, E, W);
+  int minimum = minimize(N, S, E, W);
   char closestNeighbors[4];
-  for (int i=0; i<4; i++) { 
-    if (neighborVals[i] == closest) {
-      closestNeighbors[i] = neighborDirections[i];
-    }
+  if (minimum == N) {
+    return 'N';
   }
-  return closestNeighbors;
+  else if (minimum == S) {
+    return 'S';
+  }
+  else if (minimum == E) {
+    return 'E';
+  }
+  else if (minimum == W) {
+    return 'W';
+  }
 }
 
-char chooseMove(char fwdDir, int curSpace[2], map<char, char> directions) {
-  //start this with face N
-  char facing = fwdDir;
-  char moves[4] = closestNeighbor(curspace);
-  for (int i=0; i<4; i++) {
-    if (moves[i] == facing) {
-      return 'F';
-    }
+char chooseMove() {
+  char moveDir = minNeighbor();
+  switch(facing) {
+    case 'N':
+      switch(moveDir) {
+        case 'N':
+          moveForward();
+          break;
+        case 'S':
+          turnRight();
+          turnRight();
+          moveForward();
+          break;
+        case 'E':
+          turnRight();
+          moveForward();
+          break;
+        case 'W':
+          turnLeft();
+          moveForward();
+          break;  
+      }
+    case 'S':
+      switch(moveDir) {
+        case 'N':
+          turnRight();
+          turnRight();
+          moveForward();
+          break;
+        case 'S':
+          moveForward();
+          break;
+        case 'E':
+          turnLeft();
+          moveForward();
+          break;
+        case 'W':
+          turnRight();
+          moveForward();
+          break;  
+      }
+    case 'E':
+      switch(moveDir) {
+        case 'N':
+          turnLeft();
+          moveForward();
+          break;
+        case 'S':
+          turnRight();
+          moveForward();
+          break;
+        case 'E':
+          moveForward();
+          break;
+        case 'W':
+          turnRight();
+          turnRight();
+          moveForward();
+          break;  
+      }
+    case 'W':
+      switch(moveDir) {
+        case 'N':
+          turnRight();
+          moveForward();
+          break;
+        case 'S':
+          turnLeft();
+          moveForward();
+          break;
+        case 'E':
+          turnRight();
+          turnRight();
+          moveForward();
+          break;
+        case 'W':
+          moveForward();
+          break;  
+      }
   }
-  //chose arbitrary from moves, would need to iterate through again
 }
 
-void makeMove(char action) {
-  if (action == 'L') {
-    turnLeft();
-  }
-  else if (action == 'R') {
-    turnRight();
-  }
-  else if (action == 'B') {
-    turn180();
-  }
-  moveForward();
-}
 
-/* ***Outline*** of algorithm for navigating to center of 16x16 maze
-1) Move to cell which it has gone to least
-2) Move to the cell that has minimum cell value
-3) If possible the robot must try to go straight.
-*/
-
-void floodFill() {
-
-  
-  // initialize distance from center as if there are no walls
-  for (int i=0; i<16; i++) {
-    for (int j=0; j<16; j++) {
-      maze[i][j] = minimize(manhattanDist(i, j, 7, 7), manhattanDist(i, j, 7, 8), manhattanDist(i, j, 8, 7), manhattanDist(i, j, 8, 8));
-    }
-  }
-  
-  /* Assume mouse is always in the SW corner of maze and that it is
-  facing the opening to the North */
-  int curSpace[2] = {0, 16};
-  char facing = 'N';
-  map<char, char> moves;// = calcMoves('N');
-  while (maze[curSpace[0]][curSpace[1]] != 0) {
-    char nextMove = chooseMove(facing, curSpace, moves);
-//    facing = //how to update this
-//    moves = //also this
-//    curSpace = //and this  
-  }
-  
-}
-// the loop routine runs over and over again forever:
 void loop() {
 
 }
