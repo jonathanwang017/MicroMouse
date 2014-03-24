@@ -2,6 +2,9 @@
 int led = 13;
 int motorLeft = 1;
 int motorRight = 3;
+int buttonPin = 5;
+
+int buttonState;
 
 int path_x[256];
 int path_y[256];
@@ -16,9 +19,11 @@ char facing = 'N';
 //initialize pins and setup maze with initial values
 void setup() {       
   pinMode(led, OUTPUT);
-  pinMode(motorLeft, OUTPUT); 
+  pinMode(motorLeft, OUTPUT);
   pinMode(motorRight, OUTPUT);
+  pinMode(buttonPin, INPUT);
   initializeGrid();
+  Serial.begin(57600);
 }
 
 //turn 90 degrees right (use gyro or calculate turning ratio)
@@ -46,24 +51,25 @@ void moveForward() {
   digitalWrite(motorLeft, LOW);
   trackPath();
   switch(facing) {
-    case 'N':
-      cur_y--;
-      break;
-    case 'S':
-      cur_y++;
-      break;
-    case 'E':
-      cur_x++;
-      break;
-    case 'W':
-      cur_x--;
-      break;
+  case 'N':
+    cur_y--;
+    break;
+  case 'S':
+    cur_y++;
+    break;
+  case 'E':
+    cur_x++;
+    break;
+  case 'W':
+    cur_x--;
+    break;
   }
 }
 
 //min function that takes in 4 argument
 int minimize(int left, int right, int forward, int backward) {
-  int directions[4] = {left, right, forward, backward};
+  int directions[4] = {
+    left, right, forward, backward  };
   int min = 0;
   for (int i=0; i<4; i++) {
     if (directions[i] < min) {
@@ -80,7 +86,7 @@ int manhattanDist(int x1, int y1, int x2, int y2) {
 
 //create initial maze with default values
 void initializeGrid() {
-   for (int i=0; i<16; i++) {
+  for (int i=0; i<16; i++) {
     for (int j=0; j<16; j++) {
       maze[i][j] = minimize(manhattanDist(i, j, 7, 7), manhattanDist(i, j, 7, 8), manhattanDist(i, j, 8, 7), manhattanDist(i, j, 8, 8));
     }
@@ -89,9 +95,9 @@ void initializeGrid() {
 
 //add current location to path
 void trackPath() {
-   path_x[pathLength] = cur_x;
-   path_y[pathLength] = cur_y;
-   pathLength++;
+  path_x[pathLength] = cur_x;
+  path_y[pathLength] = cur_y;
+  pathLength++;
 }
 
 //find neighboring space with smallest value
@@ -102,7 +108,7 @@ char minNeighbor() {
   int W = maze[cur_x-1][cur_y];
   int minimum = minimize(N, S, E, W);
   char closestNeighbors[4];
-  
+
   //return char corresponding to smallest value
   if (minimum == N) {
     return 'N';
@@ -133,82 +139,82 @@ boolean checkWall() {
 char chooseDirection() {
   char moveDir = minNeighbor();
   switch(facing) {
+  case 'N':
+    switch(moveDir) {
     case 'N':
-      switch(moveDir) {
-        case 'N':
-          facing = 'N';
-          break;
-        case 'S':
-          turnRight();
-          turnRight();
-          facing = 'S';
-          break;
-        case 'E':
-          turnRight();
-          facing = 'E';
-          break;
-        case 'W':
-          turnLeft();
-          facing = 'W';
-          break;  
-      }
+      facing = 'N';
+      break;
     case 'S':
-      switch(moveDir) {
-        case 'N':
-          turnRight();
-          turnRight();
-          facing = 'N';
-          break;
-        case 'S':
-          facing = 'S';
-          break;
-        case 'E':
-          turnLeft();
-          facing = 'E';
-          break;
-        case 'W':
-          turnRight();
-          facing = 'W';
-          break;  
-      }
+      turnRight();
+      turnRight();
+      facing = 'S';
+      break;
     case 'E':
-      switch(moveDir) {
-        case 'N':
-          turnLeft();
-          facing = 'N';
-          break;
-        case 'S':
-          turnRight();
-          facing = 'S';
-          break;
-        case 'E':
-          facing = 'E';
-          break;
-        case 'W':
-          turnRight();
-          turnRight();
-          facing = 'W';
-          break;  
-      }
+      turnRight();
+      facing = 'E';
+      break;
     case 'W':
-      switch(moveDir) {
-        case 'N':
-          turnRight();
-          facing = 'N';
-          break;
-        case 'S':
-          turnLeft();
-          facing = 'S';
-          break;
-        case 'E':
-          turnRight();
-          turnRight();
-          facing = 'E';
-          break;
-        case 'W':
-          facing = 'W';
-          break;  
-      }
+      turnLeft();
+      facing = 'W';
+      break;  
+    }
+  case 'S':
+    switch(moveDir) {
+    case 'N':
+      turnRight();
+      turnRight();
+      facing = 'N';
+      break;
+    case 'S':
+      facing = 'S';
+      break;
+    case 'E':
+      turnLeft();
+      facing = 'E';
+      break;
+    case 'W':
+      turnRight();
+      facing = 'W';
+      break;  
+    }
+  case 'E':
+    switch(moveDir) {
+    case 'N':
+      turnLeft();
+      facing = 'N';
+      break;
+    case 'S':
+      turnRight();
+      facing = 'S';
+      break;
+    case 'E':
+      facing = 'E';
+      break;
+    case 'W':
+      turnRight();
+      turnRight();
+      facing = 'W';
+      break;  
+    }
+  case 'W':
+    switch(moveDir) {
+    case 'N':
+      turnRight();
+      facing = 'N';
+      break;
+    case 'S':
+      turnLeft();
+      facing = 'S';
+      break;
+    case 'E':
+      turnRight();
+      turnRight();
+      facing = 'E';
+      break;
+    case 'W':
+      facing = 'W';
+      break;  
+    }
   }
 }
 
@@ -218,6 +224,15 @@ void makeMove() {
   moveForward();
 }
 
-void loop() {
 
+void testButton() {
+  int buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    turnRight();
+    Serial.println("high");
+  }
+}  
+void loop() {
+  testButton();
 }
+
