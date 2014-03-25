@@ -5,6 +5,9 @@ $(document).ready(function() {
     $("#header_subtitle").mouseleave(function() {
         $("#header_subtitle").text("A record of our robot building experience");
     });
+    $("#description_header").click(function() {
+        $("#description_sect").toggle();
+    });
     $("#parts_header").click(function() {
         $("#parts_sect").toggle();
     });

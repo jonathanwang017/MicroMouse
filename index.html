@@ -18,7 +18,19 @@
             </div>
         </div>
         <div id = "container">
-            
+            <div class = "sect_div">
+                <h2 id = "about_header" class = "sect_header">About</h2>
+            </div>
+            <div id = "about_sect">
+                <h3 id = "description_header" class = "subsect_header">IEEE Micromouse Competition</h3>
+                <div id = "description_sect">
+                    <p>Goal: Build and program a robot to navigate a 16x16 maze, starting from one corner and ending in the center.</p>
+                    <img src = "pics/micromouse_demo.JPG" height = "250" width = "400">
+                    <img src = "pics/micromouse_maze.jpg" height = "250" width = "400">
+                    <p>Our robot is built around a Teensy board, which uses the Arduino IDE.</p>
+                    <p>For our maze navigation, we are using a floodfill algorithm.</p>
+                </div>
+            </div>
             <div class = "sect_div">
                 <h2 id = "hardware_header" class = "sect_header">Hardware</h2>
             </div>
@@ -98,12 +110,12 @@
                 <div id = "building_sect">
                     <p class = "building_text">A model mouse that we are basing our project off of: </p>
                     <img src = "pics/model_mouse.jpg">
-                    <p class = "building_text">(Building not yet started)</p>
+                    <p class = "building_text">Teensy 3.1 board</p>
+                    <img src = "pics/teensy.jpg">
                 </div>
                 <h3 id = "wiring_header" class = "subsect_header">Wiring</h3>
                 <div id = "wiring_sect">
-                    <p class = "wiring_text">We do, however, have some basic wiring going on.</p>
-                    <p class = "wiring_text">Here is a super rough block diagram of final wiring: </p>
+                    <p class = "wiring_text">Here is a rough block diagram of our intended wiring: </p>
                     <img src = "pics/block_diagram.png" width="400px" height="250px">
                 </div>
             </div>
@@ -129,14 +141,17 @@
                 </div>
                 <h3 id = "algorithms_header" class = "subsect_header">Algorithms</h3>
                 <div id = "algorithms_sect">
-                    <p class = "algorithms_text">We are using an implementation of the floodfill algorithm (still figuring it out though).</p>
+                    <p class = "algorithms_text">We are using an implementation of the floodfill algorithm.</p>
                     <div id = "algorithms_subsect_left">
-                        <p class = "algorithms_text">It works sort of like this: </p>
-                        <img src = "pics/zombie_fill.gif">
+                        <p class = "algorithms_text">Example of completed flood fill: </p>
+                        <img src = "pics/floodfill_example.gif" width="300px" height="300px">
                     </div>
                     <div id = "algorithms_subsect_right">
-                        <p class = "algorithms_text">In perspective of the MicroMouse maze<br>(starting from bottom left): </p>
-                        <img src = "pics/floodfill_example.gif" width="300px" height="300px">
+                        <p>1. create initial maze assuming no walls (manhattan distance from goal)</p>
+                        <p>2. traverse maze moving towards smallest distance</p>
+                        <p>3. track spaces in current path</p>
+                        <p>4. update path distances when wall is encountered</p>
+                        <p>5. repeat until goal is hit/optimal path mapped</p>
                     </div>
                     <div class = "div_buffer">
                     </div>
