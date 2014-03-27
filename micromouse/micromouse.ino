@@ -2,17 +2,17 @@
 int led = 13;
 int motorLeft = 1;
 int motorRight = 3;
-int buttonPin = 5;
+char compass[4] = {'N','E','S','W'};
 
-int buttonState;
-
-int path_x[256];
-int path_y[256];
+int path_x[256]; //track path x-coords
+int path_y[256]; //track path y-coords
 int pathLength = 0;
 int cur_x = 0;
 int cur_y = 0;
-int maze[16][16];
-char facing = 'N';
+int maze[16][16]; //[y][x]
+char facing = 0; //cur direction (N:0,E:1,S:2,W:3)
+char sequenced[4]; //neighbors sequenced
+
 
 // the setup routine runs once when you press reset:
 
@@ -21,7 +21,6 @@ void setup() {
   pinMode(led, OUTPUT);
   pinMode(motorLeft, OUTPUT);
   pinMode(motorRight, OUTPUT);
-  pinMode(buttonPin, INPUT);
   initializeGrid();
   Serial.begin(57600);
 }
@@ -31,6 +30,12 @@ void turnRight() {
   digitalWrite(motorLeft, HIGH);
   delay(1000);
   digitalWrite(motorLeft, LOW);
+  if (facing < 3) {
+    facing++;
+  }
+  else {
+    facing = 0;
+  }
 }
 
 //turn 90 degrees left
@@ -38,11 +43,18 @@ void turnLeft() {
   digitalWrite(motorRight, HIGH);
   delay(1000);
   digitalWrite(motorRight, LOW);
+  if (facing > 0) {
+    facing--;
+  }
+  else {
+    facing = 3;
+  }
 }
 
 //move forward 1 space (figure out distance)
 //add space to path
 //update direction facing
+//sequence neighbors
 void moveForward() {
   digitalWrite(motorRight, HIGH);
   digitalWrite(motorLeft, HIGH);
@@ -50,7 +62,8 @@ void moveForward() {
   digitalWrite(motorRight, LOW);
   digitalWrite(motorLeft, LOW);
   trackPath();
-  switch(facing) {
+  orderNeighbors();
+  switch(compass[facing]) {
   case 'N':
     cur_y--;
     break;
@@ -66,14 +79,18 @@ void moveForward() {
   }
 }
 
-//min function that takes in 4 argument
-int minimize(int left, int right, int forward, int backward) {
-  int directions[4] = {
-    left, right, forward, backward  };
-  int min = 0;
+void increasePath() {
+  for (int i=0; i<pathLength; i++) {
+    maze[path_y[i]][path_x[i]]++;
+  }
+}
+
+int minimize(int left, int right, int up, int down) {
+  int dir[4] = {left, right, up, down};
+  int min = 256;
   for (int i=0; i<4; i++) {
-    if (directions[i] < min) {
-      min = directions[i];
+    if (dir[i] < min) {
+      min = dir[i];
     }
   }
   return min;
@@ -100,27 +117,71 @@ void trackPath() {
   pathLength++;
 }
 
-//find neighboring space with smallest value
-char minNeighbor() {
-  int N = maze[cur_x][cur_y-1];
-  int S = maze[cur_x][cur_y+1];
-  int E = maze[cur_x+1][cur_y];
-  int W = maze[cur_x-1][cur_y];
-  int minimum = minimize(N, S, E, W);
-  char closestNeighbors[4];
-
-  //return char corresponding to smallest value
-  if (minimum == N) {
-    return 'N';
+void orderNeighbors() {
+  int N;
+  int S;
+  int E;
+  int W;
+  if (cur_x == 0) {
+    N = maze[cur_y-1][cur_x];
+    S = maze[cur_y+1][cur_x];
+    E = maze[cur_y][cur_x+1];
+    W = 258;
   }
-  else if (minimum == S) {
-    return 'S';
+  else if (cur_x == 15) {
+    N = maze[cur_y-1][cur_x];
+    S = maze[cur_y+1][cur_x];
+    E = 258;
+    W = maze[cur_y][cur_x-1];
   }
-  else if (minimum == E) {
-    return 'E';
+  else if (cur_y == 0) {
+    N = 258;
+    S = maze[cur_y+1][cur_x];
+    E = maze[cur_y][cur_x+1];
+    W = maze[cur_y][cur_x-1];
   }
-  else if (minimum == W) {
-    return 'W';
+  else if (cur_y == 15) {
+    N = maze[cur_y-1][cur_x];
+    S = 258;
+    E = maze[cur_y][cur_x+1];
+    W = maze[cur_y][cur_x-1];
+  }
+  else {
+    N = maze[cur_y-1][cur_x];
+    S = maze[cur_y+1][cur_x];
+    E = maze[cur_y][cur_x+1];
+    W = maze[cur_y][cur_x-1];
+  }
+  int directions[4] = {N, S, E, W};
+  int temp = 0;
+ 
+  for (int i=0; i<4; i++) {
+    for (int j=i+1; j<4; j++) {
+      if (directions[j] < directions[i]) {
+        temp = directions[i];
+        directions[i] = directions[j];
+        directions[j] = temp;
+      }
+    }
+  }
+  
+  for (int k=0; k<4; k++) {
+    if (directions[k] == N) {
+      sequenced[k] = 'N';
+      N = 257;
+    }
+    else if (directions[k] == S) {
+      sequenced[k] = 'S';
+      S = 257;
+    }
+    else if (directions[k] == E) {
+      sequenced[k] = 'E';
+      E = 257;
+    }
+    else if (directions[k] == W) {
+      sequenced[k] = 'W';
+      W = 257;
+    }
   }
 }
 
@@ -129,95 +190,22 @@ boolean checkWall() {
   return false;
 }
 
-
-//I'm pretty sure multiple switch statements is a sub optimal method so feel free to improve:
-
-//!!!!uggh actually this does not take walls into account well...so needs fixing
-
-//turn to optimal direction
-//update facing direction
-char chooseDirection() {
-  char moveDir = minNeighbor();
-  switch(facing) {
-  case 'N':
-    switch(moveDir) {
-    case 'N':
-      facing = 'N';
-      break;
-    case 'S':
-      turnRight();
-      turnRight();
-      facing = 'S';
-      break;
-    case 'E':
-      turnRight();
-      facing = 'E';
-      break;
-    case 'W':
-      turnLeft();
-      facing = 'W';
-      break;  
-    }
-  case 'S':
-    switch(moveDir) {
-    case 'N':
-      turnRight();
-      turnRight();
-      facing = 'N';
-      break;
-    case 'S':
-      facing = 'S';
-      break;
-    case 'E':
-      turnLeft();
-      facing = 'E';
-      break;
-    case 'W':
-      turnRight();
-      facing = 'W';
-      break;  
-    }
-  case 'E':
-    switch(moveDir) {
-    case 'N':
-      turnLeft();
-      facing = 'N';
-      break;
-    case 'S':
-      turnRight();
-      facing = 'S';
-      break;
-    case 'E':
-      facing = 'E';
-      break;
-    case 'W':
-      turnRight();
-      turnRight();
-      facing = 'W';
-      break;  
-    }
-  case 'W':
-    switch(moveDir) {
-    case 'N':
-      turnRight();
-      facing = 'N';
-      break;
-    case 'S':
-      turnLeft();
-      facing = 'S';
-      break;
-    case 'E':
-      turnRight();
-      turnRight();
-      facing = 'E';
-      break;
-    case 'W':
-      facing = 'W';
-      break;  
-    }
+void turnDirection(char dir) {
+  while (facing!=dir) {
+    turnRight();
   }
 }
-
+    
+void chooseDirection() {
+  char moveDir;
+  for (int i=0; i<4; i++) {
+    moveDir = sequenced[i];
+    if (!checkWall()) {
+      break;
+    }
+  } 
+  turnDirection(moveDir);
+}
 
 //double check selected move and move forward
 void makeMove() {
@@ -225,14 +213,7 @@ void makeMove() {
 }
 
 
-void testButton() {
-  int buttonState = digitalRead(buttonPin);
-  if (buttonState == HIGH) {
-    turnRight();
-    Serial.println("high");
-  }
-}  
 void loop() {
-  testButton();
+
 }
 
