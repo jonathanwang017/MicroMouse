@@ -207,7 +207,6 @@ void chooseDirection() {
   turnDirection(moveDir);
 }
 
-//double check selected move and move forward
 void makeMove() {
   moveForward();
 }
