@@ -1,3 +1,5 @@
+#include <limits.h>
+
 // Pin 13 has an LED connected on most Arduino boards.
 int led = 13;
 int motorLeft = 1;
@@ -9,7 +11,12 @@ int pathLength = 0;
 int cur_x = 0;
 int cur_y = 0;
 int maze[16][16];
-char facing = 'N';
+
+const int NORTH = 0;
+const int EAST = 1;
+const int SOUTH = 2;
+const int WEST = 3;
+int facing = NORTH;
 
 // the setup routine runs once when you press reset:
 
@@ -73,6 +80,18 @@ int minimize(int left, int right, int forward, int backward) {
   return min;
 }
 
+int minIndex(int items[], int length) {
+  int minIndex = 0;
+  int minVal = INT_MAX;
+  for (int i = 0; i < length; i++) {
+    if (items[i] < minVal) {
+      minVal = items[i];
+      minIndex = i;
+    }
+  }
+  return minIndex;
+}
+
 //calculate manhattan distance between 2 points
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
@@ -94,27 +113,20 @@ void trackPath() {
    pathLength++;
 }
 
-//find neighboring space with smallest value
-char minNeighbor() {
-  int N = maze[cur_x][cur_y-1];
-  int S = maze[cur_x][cur_y+1];
-  int E = maze[cur_x+1][cur_y];
-  int W = maze[cur_x-1][cur_y];
-  int minimum = minimize(N, S, E, W);
-  char closestNeighbors[4];
-  
-  //return char corresponding to smallest value
-  if (minimum == N) {
-    return 'N';
-  }
-  else if (minimum == S) {
-    return 'S';
-  }
-  else if (minimum == E) {
-    return 'E';
-  }
-  else if (minimum == W) {
-    return 'W';
+void turnToMinNeighbor() {
+  // XXX check for out of bounds
+  int dists[] = {maze[cur_x][cur_y-1], maze[cur_x][cur_y+1],
+		 maze[cur_x+1][cur_y], maze[cur_x-1][cur_y]};
+  int dirs[] = {NORTH, SOUTH, EAST, WEST};
+
+  while (true) {
+    int targetDirIdx = minIndex(dists, 4);
+    turnToDirection(dirs[targetDirIdx]);
+    if (checkWall()) {
+      dists[targetDirIdx] = INT_MAX;
+    } else {
+      break;
+    }
   }
 }
 
@@ -123,95 +135,27 @@ boolean checkWall() {
   return false;
 }
 
-
-//I'm pretty sure multiple switch statements is a sub optimal method so feel free to improve:
-
-//!!!!uggh actually this does not take walls into account well...so needs fixing
-
-//turn to optimal direction
-//update facing direction
-char chooseDirection() {
-  char moveDir = minNeighbor();
-  switch(facing) {
-    case 'N':
-      switch(moveDir) {
-        case 'N':
-          facing = 'N';
-          break;
-        case 'S':
-          turnRight();
-          turnRight();
-          facing = 'S';
-          break;
-        case 'E':
-          turnRight();
-          facing = 'E';
-          break;
-        case 'W':
-          turnLeft();
-          facing = 'W';
-          break;  
-      }
-    case 'S':
-      switch(moveDir) {
-        case 'N':
-          turnRight();
-          turnRight();
-          facing = 'N';
-          break;
-        case 'S':
-          facing = 'S';
-          break;
-        case 'E':
-          turnLeft();
-          facing = 'E';
-          break;
-        case 'W':
-          turnRight();
-          facing = 'W';
-          break;  
-      }
-    case 'E':
-      switch(moveDir) {
-        case 'N':
-          turnLeft();
-          facing = 'N';
-          break;
-        case 'S':
-          turnRight();
-          facing = 'S';
-          break;
-        case 'E':
-          facing = 'E';
-          break;
-        case 'W':
-          turnRight();
-          turnRight();
-          facing = 'W';
-          break;  
-      }
-    case 'W':
-      switch(moveDir) {
-        case 'N':
-          turnRight();
-          facing = 'N';
-          break;
-        case 'S':
-          turnLeft();
-          facing = 'S';
-          break;
-        case 'E':
-          turnRight();
-          turnRight();
-          facing = 'E';
-          break;
-        case 'W':
-          facing = 'W';
-          break;  
-      }
+void turnToDirection(int moveDir) {
+  int change = moveDir - facing;
+  // Coerce into range [-2, 2]
+  if (change < -2) {
+    change += 4;
+  } else if (change > 2) {
+    change -= 4;
   }
-}
 
+  // Note: Only one of these two blocks will (and should) be executed
+  while (change < 0) {
+    turnLeft();
+    change++;
+  }
+  while (change > 0) {
+    turnRight();
+    change--;
+  }
+
+  facing = moveDir;
+}
 
 //double check selected move and move forward
 void makeMove() {
