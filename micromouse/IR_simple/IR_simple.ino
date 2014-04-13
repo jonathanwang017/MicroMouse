@@ -1,10 +1,13 @@
 void setup() {
-  pinMode(4,INPUT);
-  pinMode(13,OUTPUT);
+  pinMode(A4,INPUT);
   Serial.begin(9600);
+  pinMode(13, OUTPUT);
 }
 void loop() {
+  Serial.println(analogRead(A4));
   digitalWrite(13, HIGH);
-  Serial.println(digitalRead(4));
-  delay(1000);
+  delay(500);
+  
 }
+
+
