@@ -14,5 +14,7 @@ void setup() {
 }
 
 void loop() {
-
+  while (maze[cur_x][cur_y] != 0) {
+    makeMove();
+  }
 }

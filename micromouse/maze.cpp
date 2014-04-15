@@ -24,12 +24,13 @@ struct coord {
   }
 };
 
-unsigned char path_x[MAZE_SIZE * MAZE_SIZE];
-unsigned char path_y[MAZE_SIZE * MAZE_SIZE];
-int pathLength = 0;
+// unsigned char path_x[MAZE_SIZE * MAZE_SIZE];
+// unsigned char path_y[MAZE_SIZE * MAZE_SIZE];
+// int pathLength = 0;
 int cur_x = 0;
 int cur_y = 0;
-unsigned char maze[MAZE_SIZE][MAZE_SIZE]; // Distances range from 0 to 254, so just perfect
+// Distances range from 0 to 254, so just perfect
+unsigned char maze[MAZE_SIZE][MAZE_SIZE];
 int facing = NORTH;
 
 // calculate manhattan distance between 2 points
@@ -43,8 +44,10 @@ void initGrid() {
   int m2 = MAZE_SIZE / 2;
   for (int i=0; i<MAZE_SIZE; i++) {
     for (int j=0; j<MAZE_SIZE; j++) {
-      maze[i][j] = min4(manhattanDist(i, j, m1, m1), manhattanDist(i, j, m1, m2),
-			manhattanDist(i, j, m2, m1), manhattanDist(i, j, m2, m2));
+      maze[i][j] = min4(manhattanDist(i, j, m1, m1),
+			manhattanDist(i, j, m1, m2),
+			manhattanDist(i, j, m2, m1),
+			manhattanDist(i, j, m2, m2));
     }
   }
 }
@@ -80,11 +83,14 @@ int distOfNeighbor(int x, int y, int dir) {
   return maze[neighborCoord.x][neighborCoord.y];
 }
 
-void updateDistances(Stack<coord> &stack) {
+void updateDistances(int x, int y) {
+  static const int dirs[] = {NORTH, SOUTH, EAST, WEST};
+  Stack<coord> stack;
+  coord init(x, y);
+  stack.push(init);
   while (!stack.empty()) {
     coord target = stack.pop();
     int dists[4];
-    int dirs[] = {NORTH, SOUTH, EAST, WEST};
     for (int i = 0; i < 4; i++) {
       dists[i] = distOfNeighbor(target.x, target.y, dirs[i]);
     }
@@ -92,9 +98,7 @@ void updateDistances(Stack<coord> &stack) {
     if (maze[target.x][target.y] != desiredDistance) {
       for (int i = 0; i < 4; i++) {
 	if (dists[i] != INT_MAX) {
-	  if (!stack.push(getNeighborCoord(target.x, target.y, dirs[i]))) {
-	    return;
-	  }
+	  stack.push(getNeighborCoord(target.x, target.y, dirs[i]));
 	}
       }
       maze[target.x][target.y] = desiredDistance;
@@ -160,12 +164,7 @@ void turnToMinNeighbor() {
     turnToDirection(targetDir);
     // If there is a wall ahead of us, we must redo our distance chart
     if (hasUnknownWallAhead()) {
-      Stack<coord> stack;
-      coord cur(cur_x, cur_y);
-      if (!stack.push(cur)) {
-	return;
-      }
-      updateDistances(stack);
+      updateDistances(cur_x, cur_y);
     } else {
       break;
     }
@@ -188,9 +187,9 @@ void trackPath() {
     cur_x--;
     break;
   }
-  path_x[pathLength] = cur_x;
-  path_y[pathLength] = cur_y;
-  pathLength++;
+  // path_x[pathLength] = cur_x;
+  // path_y[pathLength] = cur_y;
+  // pathLength++;
 }
 
 // Make a move in the direction
