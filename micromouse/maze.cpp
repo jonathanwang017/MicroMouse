@@ -162,7 +162,8 @@ void turnToMinNeighbor() {
   while (true) {
     int targetDir = minimizingDirection();
     turnToDirection(targetDir);
-    // If there is a wall ahead of us, we must redo our distance chart
+    // If there is a wall ahead of us, we must redo our distance chart and
+    // go back to the beginning of the loop
     if (hasUnknownWallAhead()) {
       updateDistances(cur_x, cur_y);
     } else {
