@@ -7,13 +7,13 @@
 #ifndef __WALL_H_
 #define __WALL_H_
 
-#include "maze.h"
+#include "maze.h" // MAZE_SIZE
 
 extern char walls[MAZE_SIZE][MAZE_SIZE];
 
 void initMazeBorder();
-void addWall(int x, int y, int dir);
 bool hasKnownWall(int x, int y, int dir);
-bool hasUnknownWallAhead();
+bool knownNotWall(int x, int y, int dir);
+bool hasWallAhead();
 
 #endif // __WALL_H_

@@ -8,46 +8,52 @@
 #include "maze.h"
 #include "walldetection.h"
 
+// Format: for each element at index x, y, bit 0 (LSB) is whether we know if
+// there is a wall at (x, y) in the north direction, likewise bit 1 is for 
+// east, bit 2 for south, bit 3 for west. Bit 4 is whether we know if there
+// isn't a wall at (x, y) in the north direction. Bit 5 is ...
 char walls[MAZE_SIZE][MAZE_SIZE] = {0};
 
-/* initialize walls at borders of maze */
-void initMazeBorder() {
-  for (int x = 0; x < MAZE_SIZE; x++) {
-    addWall(x, MAZE_SIZE - 1, NORTH);
-    addWall(x, 0, SOUTH);
-  }
-  for (int y = 0; y < MAZE_SIZE; y++) {
-    addWall(0, y, WEST);
-  }
-  for (int y = 0; y < MAZE_SIZE; y++) {
-    addWall(MAZE_SIZE - 1, y, EAST);
-  }
-}
-
-// marks that the cell at (x, y) has a wall in the direction given by dir
-void addWall(int x, int y, int dir) {
-  walls[x][y] |= (1 << dir);
+// marks that the cell at (x, y) has or doesn't have a wall in the direction
+// dir
+void markWall(int x, int y, int dir, bool hasWall) {
+  int off = hasWall ? 0 : 4;
+  walls[x][y] |= (1 << off << dir);
   switch (dir) {
   case NORTH:
     if (y < MAZE_SIZE - 1) {
-      walls[x][y + 1] |= (1 << SOUTH);
+      walls[x][y + 1] |= (1 << off << SOUTH);
     }
     break;
   case SOUTH:
     if (y > 0) {
-      walls[x][y - 1] |= (1 << NORTH);
+      walls[x][y - 1] |= (1 << off << NORTH);
     }
     break;
   case WEST:
     if (x > 0) {
-      walls[x - 1][y] |= (1 << EAST);
+      walls[x - 1][y] |= (1 << off << EAST);
     }
     break;
   case EAST:
     if (x < MAZE_SIZE - 1) {
-      walls[x + 1][y] |= (1 << WEST);
+      walls[x + 1][y] |= (1 << off << WEST);
     }
     break;
+  }
+}
+
+// initialize walls at borders of maze
+void initMazeBorder() {
+  for (int x = 0; x < MAZE_SIZE; x++) {
+    markWall(x, MAZE_SIZE - 1, NORTH, true);
+    markWall(x, 0, SOUTH, true);
+  }
+  for (int y = 0; y < MAZE_SIZE; y++) {
+    markWall(0, y, WEST, true);
+  }
+  for (int y = 0; y < MAZE_SIZE; y++) {
+    markWall(MAZE_SIZE - 1, y, EAST, true);
   }
 }
 
@@ -56,10 +62,19 @@ bool hasKnownWall(int x, int y, int dir) {
   return walls[x][y] & (1 << dir);
 }
 
-bool hasUnknownWallAhead() {
-  if (checkWall()) {
-    addWall(cur_x, cur_y, facing);
+// Returns whether we know if there isn't a wall in the direction dir at (x, y)
+bool knownNotWall(int x, int y, int dir) {
+  return walls[x][y] & (1 << 4 << dir);
+}
+
+// Returns whether there is a wall ahead of us. Updates the wall table too.
+bool hasWallAhead() {
+  if (hasKnownWall(cur_x, cur_y, facing)) {
     return true;
+  } else if (knownNotWall(cur_x, cur_y, facing)) {
+    return false;
   }
-  return false;
+  bool hasWall = checkWall();
+  markWall(cur_x, cur_y, facing, hasWall);
+  return hasWall;
 }
