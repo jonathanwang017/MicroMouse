@@ -121,6 +121,18 @@ p
     padding-left: 20px;
     padding-right: 20px;
 }
+.challenges_text
+{
+    line-height: 2;
+}
+#challenges_sect
+{
+    background-color: #35C0CD;
+    display: none;
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
 #software_header
 {
     margin-left: 30px;

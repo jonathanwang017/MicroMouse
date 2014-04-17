@@ -14,6 +14,9 @@ $(document).ready(function() {
     $("#wiring_header").click(function() {
         $("#wiring_sect").toggle();
     });
+    $("#challenges_header").click(function() {
+        $("#challenges_sect").toggle();
+    });
     $("#operations_header").click(function() {
         $("#operations_sect").toggle();
     });

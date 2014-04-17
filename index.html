@@ -33,9 +33,9 @@
                         <th class = "parts_table">Price</th>
                     </tr>
                     <tr>
-                        <td class = "parts_table"><a href = http://www.pololu.com/product/1490>Breadboards</a></td>
+                        <td class = "parts_table"><a href = http://www.pololu.com/product/1490>Breadboards(2)</a></td>
                         <td class = "parts_table">for easy testing</td>
-                        <td class = "parts_table">$3</td>
+                        <td class = "parts_table">$6</td>
                     </tr>
                     <tr>
                         <td class = "parts_table"><a href = http://www.pjrc.com/store/teensy31_pins.html>Teensy 3.1</a></td>
@@ -59,7 +59,7 @@
                     </tr>
                     <tr>
                         <td class = "parts_table"><a href = https://www.sparkfun.com/products/339>Batteries(2)</a></td>
-                        <td class = "parts_table">1000mAh</td>
+                        <td class = "parts_table">1000mAh, 3.7V</td>
                         <td class = "parts_table">$24</td>
                     </tr>
                     <tr>
@@ -73,14 +73,14 @@
                         <td class = "parts_table">$12</td>
                     </tr>
                     <tr>
-                        <td class = "parts_table"><a href = https://www.sparkfun.com/products/10064>Rotary Switch</a></td>
-                        <td class = "parts_table">a potentiometer to select programs</td>
-                        <td class = "parts_table">$3</td>
+                        <td class = "parts_table"><a href = http://www.mouser.com/ProductDetail/Vishay/BPW85C/?qs=%2fha2pyFadug5jlzw6fvlroUhHDkBdq2eS8gzqXfb9yE%3d>Vishay IR LED Emitter</a></td>
+                        <td class = "parts_table">IR LED emitter</td>
+                        <td class = "parts_table">$0.38</td>
                     </tr>
                     <tr>
-                        <td class = "parts_table"><a href = https://www.sparkfun.com/products/10263>Knob</a></td>
-                        <td class = "parts_table">just a knob</td>
-                        <td class = "parts_table">$1</td>
+                        <td class = "parts_table"><a href = http://www.mouser.com/ProductDetail/OSRAM-Opto-Semiconductors/SFH-4550/?qs=K5ta8V%252bWhtavCsf0k/Oizw==>Osram IR LED Receiver</a></td>
+                        <td class = "parts_table">IR LED sensor</td>
+                        <td class = "parts_table">$0.53</td>
                     </tr>
                     </table>
                 </div>
@@ -88,13 +88,30 @@
                 <div id = "building_sect">
                     <p class = "building_text">A model mouse that we are basing our project off of: </p>
                     <img src = "pics/model_mouse.jpg">
-                    <p class = "building_text">(Building not yet started)</p>
+                    <p class = "building_text">Our robot (hardware complete)</p>
+                    <img src = "pics/robot_top_side.jpg" width="300px" height="250px">
                 </div>
                 <h3 id = "wiring_header" class = "subsect_header">Wiring</h3>
                 <div id = "wiring_sect">
-                    <p class = "wiring_text">We do, however, have some basic wiring going on.</p>
-                    <p class = "wiring_text">Here is a super rough block diagram of final wiring: </p>
+                    <p class = "wiring_text">Our completed wiring - messy but works</p>
+                    <img src = "pics/robot_top.jpg" width="200px" height="250px">
+                    <img src = "pics/robot_bottom.jpg" width="200px" height="250px">
+                    <p class = "wiring_text">Here is a rough block diagram of wiring: </p>
                     <img src = "pics/block_diagram.png" width="400px" height="250px">
+                </div>
+                <h3 id = "challenges_header" class = "subsect_header">Challenges</h3>
+                <div id = "challenges_sect">
+                    <p class = "challenges_text">> Our biggest challenge was voltage and the IR LED sensor. Many components required 4-5V 
+                    but our battery only outputted 3.7V and the microcontroller only gave 3.3V. To address this issue, we had to use an 
+                    adjustable boost regulator. While obtaining the component was easy enough, there were no wiring diagrams online so we
+                    had to do extensive test to make sure we got the right voltage.<br>> The other problem was the sensor. At first we 
+                    considered using a pre-assembled sensor, but we ended up getting our hands on 2 separate LEDs (receiver and emitter) 
+                    It took a lot of measuring to find desired resistance to be able to sense walls at a fair distance. Even then, the 
+                    wiring proved to be troublesome, as we hooked it up to digital pins instead of analog for a while.<br>> Finally, one 
+                    other little issue was the encoders and h-bridge. These were the hardest components to use, since there was significant 
+                    logic involved in the basic code. However, after understanding the motor waveforms and finding a pin diagram for the 
+                    h-bridge, these problems were quickly addressed.</p>
+                    
                 </div>
             </div>
             <div class = "sect_div">
