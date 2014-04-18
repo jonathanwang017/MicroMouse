@@ -7,8 +7,10 @@
 #ifndef __MOVE_H_
 #define __MOVE_H_
 
+void initMove();
 void moveForward();
 void turnLeft();
 void turnRight();
+void turn180();
 
 #endif

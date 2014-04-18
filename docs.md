@@ -61,8 +61,8 @@ Methods:
 -   initMazeBorder()
 
 
-Hardware-Interfacing Modules
-----------------------------
+Device Drivers
+--------------
 
 ### Motion Module ###
 File: move.cpp
@@ -74,6 +74,7 @@ Methods:
 -   moveForward()
 -   turnLeft()
 -   turnRight()
+-   turn180()
 
 ### Wall Detection Module ###
 File: walldetection.ino
@@ -82,7 +83,7 @@ This module is used by the wall module. It operates the IR sensor, looking for
 walls around us.
 
 Methods:
--   checkWall() - Maybe should be able to check for wall in a specific direction...
+-   checkWall()
 
 
 Utilities
