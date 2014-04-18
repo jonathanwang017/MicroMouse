@@ -10,11 +10,15 @@
 using namespace std;
 
 extern char realWalls[MAZE_SIZE][MAZE_SIZE];
+bool verbose = false;
 
 void usage(char *myName) {
-  cout << "Usage: " << myName << " FILE\n";
+  cout << "Usage: " << myName << " [-v] FILE ITERATIONS\n";
   cout << "\n";
   cout << "Tests the micromouse navigation on the specified maze.\n";
+  cout << "Makes ITERATIONS single-way trips.\n";
+  cout << "Use -v for detailed info on the internal state of the walls array."
+          "\n";
   exit(1);
 }
 
@@ -54,7 +58,7 @@ void readFile(char *progName, char *filename) {
 //       U                Y            vvv
 //       U                N            ,,,
 //       U                U             ?
-void printNSWall(int x, int y) {
+void printNSWallVerbose(int x, int y) {
   if (hasKnownWall(x, y, SOUTH)) {
     if (hasKnownWall(x, y - 1, NORTH)) {
       cout << "---";
@@ -95,7 +99,7 @@ void printNSWall(int x, int y) {
 //      U               Y             > 
 //      U               N             ] 
 //      U               U             ?
-void printWEWall(int x, int y) {
+void printWEWallVerbose(int x, int y) {
   if (hasKnownWall(x, y, EAST)) {
     if (hasKnownWall(x + 1, y, WEST)) {
       cout << "|";
@@ -123,7 +127,7 @@ void printWEWall(int x, int y) {
   }
 }
 
-void printGrid() {
+void printGridVerbose() {
   // Print north walls of top row
   for (int x = 0; x < MAZE_SIZE; x++) {
     cout << " ";
@@ -158,7 +162,7 @@ void printGrid() {
       }
       // Print side walls
       if (x != MAZE_SIZE - 1) { // Side wall between columns
-	printWEWall(x, y);
+	printWEWallVerbose(x, y);
       } else { // Eastern border
 	if (hasKnownWall(MAZE_SIZE - 1, y, EAST)) {
 	  cout << "|";
@@ -175,7 +179,7 @@ void printGrid() {
     for (int x = 0; x < MAZE_SIZE; x++) {
       cout << " ";
       if (y != 0) { // Horizontal wall between rows
-	printNSWall(x, y);
+	printNSWallVerbose(x, y);
       } else { // South walls of bottom row
 	if (hasKnownWall(x, 0, SOUTH)) {
 	  cout << "---";
@@ -193,23 +197,108 @@ void printGrid() {
   cout << "\n";
 }
 
+void printGridNormal() {
+  // Print most of table
+  for (int y = MAZE_SIZE - 1; y >= 0; y--) {
+    // Print north walls
+    for (int x = 0; x < MAZE_SIZE; x++) {
+      cout << " ";
+      if (hasKnownWall(x, y, NORTH)) {
+	cout << "---";
+      } else {
+	cout << "   ";
+      }
+    }
+    cout << "\n";
+
+    // Print west walls and cell distances
+    for (int x = 0; x < MAZE_SIZE; x++) {
+      if (hasKnownWall(x, y, WEST)) {
+	cout << "|";
+      } else {
+	cout << " ";
+      }
+      if (x == cur_x && y == cur_y) {
+	cout << "  *";
+      } else {
+	cout << setw(3) << (int) maze[x][y] << setw(0);
+      }
+    }
+
+    // Print eastern boundary
+    if (hasKnownWall(MAZE_SIZE - 1, y, EAST)) {
+      cout << "|";
+    } else {
+      cout << " ";
+    }
+    cout << "\n";
+  }
+  // Print southern boundary
+  for (int x = 0; x < MAZE_SIZE; x++) {
+    cout << " ";
+    if (hasKnownWall(x, 0, SOUTH)) {
+      cout << "---";
+    } else {
+      cout << "   ";
+    }
+  }
+  cout << "\n";
+  cout << "Current: (" << cur_x << ", " << cur_y << ") "
+       << (int) maze[cur_x][cur_y] << "\n";
+  cout << "\n";
+}
+
+void printGrid() {
+  if (verbose) {
+    printGridVerbose();
+  } else {
+    printGridNormal();
+  }
+}
+
 int main(int argc, char **argv) {
   ifstream fin;
+  int optOff = 0;
 
-  if (argc == 1) {
+  if (argc < 3) {
     usage(argv[0]);
   }
+  if (strcmp(argv[1], "-v") == 0) {
+    if (argc < 4) {
+      usage(argv[0]);
+    }
+    verbose = true;
+    optOff++;
+  }
+  int iterations = atoi(argv[2 + optOff]);
+  if (iterations < 1) {
+    usage(argv[0]);
+  }
+  readFile(argv[0], argv[1 + optOff]);
 
-  readFile(argv[0], argv[1]);
-
-  int m1 = (MAZE_SIZE - 1) / 2;
-  int m2 = MAZE_SIZE / 2;
-
-  initGrid();
-  initMazeBorder();
+  initMaze();
+  initWall();
+  cout << "Iteration 0\n";
+  cout << "============================================================\n";
   printGrid();
   while (maze[cur_x][cur_y] != 0) {
     makeMove();
     printGrid();
+  }
+
+  for (int i = 1; i < iterations; i++) {
+    if (i % 2 == 0) {
+      switchDestinationToCenter();
+    } else {
+      switchDestinationToCorner();
+    }
+    cout << "\n";
+    cout << "Iteration " << i << "\n";
+    cout << "============================================================\n";
+    printGrid();
+    while (maze[cur_x][cur_y] != 0) {
+      makeMove();
+      printGrid();
+    }
   }
 }

@@ -43,8 +43,8 @@ void markWall(int x, int y, int dir, bool hasWall) {
   }
 }
 
-// initialize walls at borders of maze
-void initMazeBorder() {
+// initialize walls at borders of maze and to right of (0, 0)
+void initWall() {
   for (int x = 0; x < MAZE_SIZE; x++) {
     markWall(x, MAZE_SIZE - 1, NORTH, true);
     markWall(x, 0, SOUTH, true);
@@ -55,6 +55,7 @@ void initMazeBorder() {
   for (int y = 0; y < MAZE_SIZE; y++) {
     markWall(MAZE_SIZE - 1, y, EAST, true);
   }
+  markWall(0, 0, EAST, true);
 }
 
 // returns whether we know if there is a wall in the direction dir at (x, y)

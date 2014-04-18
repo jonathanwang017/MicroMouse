@@ -13,15 +13,27 @@ const int EAST = 1;
 const int SOUTH = 2;
 const int WEST = 3;
 
-extern unsigned char path_x[MAZE_SIZE * MAZE_SIZE];
-extern unsigned char path_y[MAZE_SIZE * MAZE_SIZE];
-extern int pathLength;
+struct coord {
+  int x;
+  int y;
+
+  coord(int x, int y) {
+    this->x = x;
+    this->y = y;
+  }
+
+  coord() {
+  }
+};
+
 extern int cur_x;
 extern int cur_y;
 extern unsigned char maze[MAZE_SIZE][MAZE_SIZE];
 extern int facing;
 
-void initGrid();
+void initMaze();
 void makeMove();
+void switchDestinationToCenter();
+void switchDestinationToCorner();
 
 #endif // __MAZE_H_
