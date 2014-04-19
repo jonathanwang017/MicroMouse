@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Pin 13 has an LED connected on most Arduino boards.
 int led = 13;
 int motorLeft = 1;
@@ -13,10 +14,17 @@ int maze[16][16]; //[y][x]
 char facing = 0; //cur direction (N:0,E:1,S:2,W:3)
 char sequenced[4]; //neighbors sequenced
 
+=======
+#include "maze.h"
+#include "move.h"
+#include "wall.h"
+#include "walldetection.h"
+>>>>>>> master
 
 // the setup routine runs once when you press reset:
 
 //initialize pins and setup maze with initial values
+<<<<<<< HEAD
 void setup() {       
   pinMode(led, OUTPUT);
   pinMode(motorLeft, OUTPUT);
@@ -76,9 +84,22 @@ void moveForward() {
   case 'W':
     cur_x--;
     break;
-  }
+=======
+void setup() {
+  initMaze();
+  initWall();
+  initMove();
+  initWallDetection();
 }
 
+void loop() {
+  // Go there for the first time
+  while (maze[cur_x][cur_y] != 0) {
+    makeMove();
+>>>>>>> master
+  }
+
+<<<<<<< HEAD
 void increasePath() {
   for (int i=0; i<pathLength; i++) {
     maze[path_y[i]][path_x[i]]++;
@@ -91,11 +112,16 @@ int minimize(int left, int right, int up, int down) {
   for (int i=0; i<4; i++) {
     if (dir[i] < min) {
       min = dir[i];
+=======
+  while (true) {
+    // Now go back
+    switchDestinationToCorner();
+    while (maze[cur_x][cur_y] != 0) {
+      makeMove();
+>>>>>>> master
     }
-  }
-  return min;
-}
 
+<<<<<<< HEAD
 //calculate manhattan distance between 2 points
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
@@ -216,3 +242,12 @@ void loop() {
 
 }
 
+=======
+    // Now go there again
+    switchDestinationToCenter();
+    while (maze[cur_x][cur_y] != 0) {
+      makeMove();
+    }
+  }
+}
+>>>>>>> master
