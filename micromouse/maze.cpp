@@ -17,9 +17,6 @@ int cur_y = 0;
 // Distances range from 0 to 254, so just perfect
 unsigned char maze[MAZE_SIZE][MAZE_SIZE];
 int facing = NORTH;
-coord CENTER_SQUARES[4];
-coord *destSquares;
-int destSquaresLen;
 
 // calculate manhattan distance between 2 points
 int manhattanDist(int x1, int y1, int x2, int y2) {
@@ -38,12 +35,6 @@ void initMaze() {
 			manhattanDist(i, j, m2, m2));
     }
   }
-  CENTER_SQUARES[0].x = CENTER_SQUARES[1].x = m1;
-  CENTER_SQUARES[2].x = CENTER_SQUARES[3].x = m2;
-  CENTER_SQUARES[0].y = CENTER_SQUARES[2].y = m1;
-  CENTER_SQUARES[1].y = CENTER_SQUARES[3].y = m2;
-  destSquares = CENTER_SQUARES;
-  destSquaresLen = 4;
 }
 
 // Returns the coordinates of the neighbor of (x, y) in the direction dir
@@ -82,7 +73,8 @@ int distOfNeighbor(int x, int y, int dir) {
 
 // Update distances. The stack is a stack of squares to process. Other items
 // are added to and removed from the stack routinely. destSq is an array of
-// squares whose distances should be ensured to be 0.
+// squares whose distances should be ensured to be 0. If this doesn't matter,
+// you can use null.
 void updateDistances(Stack<coord> &stack, coord destSq[], int numDestSq) {
   static const int dirs[] = {NORTH, SOUTH, EAST, WEST};
   // Now calculate all distances (starting with destination squares)
@@ -117,37 +109,7 @@ void updateDistances(Stack<coord> &stack, coord destSq[], int numDestSq) {
   }
 }
 
-// Look for new walls at the current square and update distances if there are
-// new walls.
-void updateDistancesIfNeeded() {
-  int dirs[] = {facing, (facing + 3) % 4, (facing + 1) % 4};
-  bool dirty = false;
-  bool dirtyDirs[4] = {false};
-  // Check every direction for new walls. (Remember, we must continue even if we discover walls.)
-  for (int i = 0; i < 3; i++) {
-    if (!hasKnownWall(cur_x, cur_y, dirs[i]) && !knownNotWall(cur_x, cur_y, dirs[i])) {
-      if (detectWall(dirs[i])) {
-	dirty = true;
-	dirtyDirs[i] = true;
-      }
-    }
-  }
-  // Do update if necessary. Push current cell's former neighbors and itself onto stack.
-  if (dirty) {
-    Stack<coord> stack;
-    coord cur(cur_x, cur_y);
-    for (int i = 0; i < 4; i++) {
-      if (dirtyDirs[i]) {
-	stack.push(getNeighborCoord(cur_x, cur_y, dirs[i]));
-      }
-    }
-    stack.push(cur);
-    updateDistances(stack, destSquares, destSquaresLen);  
-  }
-}
-
-// Updates distances if necessary, and then finds the direction that minimizes
-// the distance, subject to the following:
+// Finds the direction that minimizes the distance, subject to the following:
 // 1. If there is a tie between going forward and turning, go forward
 // 2. Avoid turning around
 int minimizingDirection() {
@@ -156,7 +118,6 @@ int minimizingDirection() {
   int backward = (facing + 2) % 4;
   int left = (facing + 3) % 4;
 
-  updateDistancesIfNeeded();
   // The minimizing distance will be maze[cur_x][cur_y] - 1, due to the fact
   // that each cell's distance is the distance of its neighbor closest to the
   // destination plus one.
@@ -197,6 +158,23 @@ void turnToDirection(int moveDir) {
   facing = moveDir;
 }
 
+void turnToMinNeighbor() {
+  while (true) {
+    int targetDir = minimizingDirection();
+    turnToDirection(targetDir);
+    // If there is a wall ahead of us, we must redo our distance chart and
+    // go back to the beginning of the loop
+    if (hasWallAhead()) {
+      Stack<coord> stack;
+      coord cur(cur_x, cur_y);
+      stack.push(cur);
+      updateDistances(stack, NULL, 0);
+    } else {
+      break;
+    }
+  }
+}
+
 // add current location to path
 void trackPath() {
   switch(facing) {
@@ -217,7 +195,7 @@ void trackPath() {
 
 // Make a move in the direction
 void makeMove() {
-  turnToDirection(minimizingDirection());
+  turnToMinNeighbor();
   moveForward();
   trackPath();
 }
@@ -238,9 +216,12 @@ void switchDestinationToCenter() {
   coord c(m1, m1);
   stack.push(c);
 
-  destSquares = CENTER_SQUARES;
-  destSquaresLen = 4;
-  updateDistances(stack, CENTER_SQUARES, 4);
+  coord centerSquares[4];
+  centerSquares[0].x = centerSquares[1].x = m1;
+  centerSquares[2].x = centerSquares[3].x = m2;
+  centerSquares[0].y = centerSquares[2].y = m1;
+  centerSquares[1].y = centerSquares[3].y = m2;
+  updateDistances(stack, centerSquares, 4);
 }
 
 // Switches the destination to (0, 0) and resets the board accordingly.
@@ -256,7 +237,5 @@ void switchDestinationToCorner() {
   stack.push(c);
 
   // Hack: Treat c as one-element array
-  destSquares = &c;
-  destSquaresLen = 1;
   updateDistances(stack, &c, 1);
 }

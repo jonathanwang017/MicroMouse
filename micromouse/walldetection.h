@@ -8,8 +8,6 @@
 #define __WALLDETECTION_H_
 
 void initWallDetection();
-bool checkWallFront();
-bool checkWallLeft();
-bool checkWallRight();
+bool checkWall();
 
 #endif

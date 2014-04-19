@@ -68,20 +68,14 @@ bool knownNotWall(int x, int y, int dir) {
   return walls[x][y] & (1 << 4 << dir);
 }
 
-// Returns whether there is a wall in the given direction. Updates the wall
-// table too.
-bool detectWall(int direction) {
-  bool hasWall;
-  if (direction == facing) {
-    hasWall = checkWallFront();
-  } else if (direction == (facing + 3) % 4) {
-    hasWall = checkWallLeft();
-  } else if (direction == (facing + 1) % 4) {
-    hasWall = checkWallRight();
-  } else {
-    // No sensor behind, just return false. This shouldn't be called anyway.
+// Returns whether there is a wall ahead of us. Updates the wall table too.
+bool hasWallAhead() {
+  if (hasKnownWall(cur_x, cur_y, facing)) {
+    return true;
+  } else if (knownNotWall(cur_x, cur_y, facing)) {
     return false;
   }
-  markWall(cur_x, cur_y, direction, hasWall);
+  bool hasWall = checkWall();
+  markWall(cur_x, cur_y, facing, hasWall);
   return hasWall;
 }
