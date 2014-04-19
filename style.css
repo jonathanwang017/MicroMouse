@@ -1,37 +1,23 @@
 html, body
 {
-    background-color: #5EC4CD;
+    background-color: WHITE;
     margin: 0;
-    padding: 0;
 }
 p
 {
     font-family: 'Duru Sans', sans-serif;
     font-size: 14px;
 }
-#header_div
-{
-    background-color: #5EC4CD;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
-}
 #container
 {
-    background-color: #C5F0ED;
+    background-color: WHITE;
     height: auto;
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-top: 30px;
-    padding-bottom: 60px;
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0px;
 }
 #header
 {
-    background-color: #015C65;
-    padding: 20px;
-
+    background-color: BLUE;
+    padding: 20px
 }
 #header_text
 {
@@ -48,47 +34,15 @@ p
     margin-bottom: 0;
     margin-top: 10px;
 }
-.sect_div
-{
-    background-color: #028E9B;
-    margin-top: 30px;
-    text-align: center;
-}
 .sect_header
 {
-    margin: 0;
-    font-family: 'Bubbler One', sans-serif;
-    font-size: 40px;
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-size: 30px;
 }
 .subsect_header
 {
-    margin-bottom: 0;
     font-family: 'Duru Sans', sans-serif;
     font-size: 20px;
-    text-decoration: underline;
-    font-weight: bolder;
-}
-#about_header
-{
-    margin-left: 30px;
-    margin-bottom: 0;
-}
-#about_sect
-{
-    background-color: #35C0CD;
-    height: auto;
-    padding: 20px;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 40px;
-}
-#description_sect
-{
-    background-color: #35C0CD;
-    display: none;
-    height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 #hardware_header
 {
@@ -97,20 +51,18 @@ p
 }
 #hardware_sect
 {
-    background-color: #35C0CD;
+    background-color: GOLD;
     height: auto;
     padding: 20px;
     padding-left: 50px;
     padding-right: 50px;
-    padding-bottom: 40px;
 }
 #parts_sect
 {
-    background-color: #35C0CD;
+    background-color: BLUE;
     display: none;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px;
 }
 #parts_table
 {
@@ -129,31 +81,17 @@ p
 }
 #building_sect
 {
-    background-color: #35C0CD;
+    background-color: BLUE;
     display: none;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px;
 }
 #wiring_sect
 {
-    background-color: #35C0CD;
+    background-color: BLUE;
     display: none;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-.challenges_text
-{
-    line-height: 2;
-}
-#challenges_sect
-{
-    background-color: #35C0CD;
-    display: none;
-    height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px;
 }
 #software_header
 {
@@ -162,43 +100,36 @@ p
 }
 #software_sect
 {
-    background-color: #35C0CD;
+    background-color: BLUE;
     height: auto;
     padding: 20px;
     padding-left: 50px;
     padding-right: 50px;
-    padding-bottom: 40px;
 }
 #operations_sect
 {
-    background-color: #35C0CD;
+    background-color: GOLD;
     display: none;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px;
 }
 #operations_subsect_left
 {
     margin-left: 30px;
-    width: 35%;
+    width: 30%;
     float: left;
 }
 #operations_subsect_right
 {
-    width: 50%;
+    width: 25%;
     float: left;
-}
-.function
-{
-    font-weight: bolder;
 }
 #algorithms_sect
 {
-    background-color: #35C0CD;
+    background-color: GOLD;
     display: none;
     height: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px;
 }
 #algorithms_subsect_left
 {
@@ -218,7 +149,7 @@ p
 }
 #misc_sect
 {
-    background-color: #35C0CD;
+    background-color: GOLD;
     height: auto;
     padding: 20px;
     padding-left: 50px;
@@ -226,7 +157,7 @@ p
 }
 #git_link
 {
-    color: #35C0CD;
+    color: #27A4DB;
     text-decoration: none;
 }
 #git_link:hover
@@ -235,22 +166,11 @@ p
 }
 #bottom_buffer
 {
-    margin-bottom: 0;
-    background-color: #015C65;
-    padding: 20px;
     text-align: center;
+    height: 200px;
 }
 .div_buffer
 {
     clear: both;
     height: 10px;
-}
-#end_div
-{
-    padding-left: 0;
-    padding-right: 0;
-}
-#endnote
-{
-    margin: 0;
 }
