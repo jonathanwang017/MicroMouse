@@ -32,10 +32,11 @@ void setup() {
 }
 
 void loop() {
-  if (analogRead(A4) < 900) {
-    digitalWrite(rightEnable, LOW);
-    digitalWrite(leftEnable, LOW);
-  }
+//  if (analogRead(A4) < 900) {
+//    digitalWrite(rightEnable, LOW);
+//    digitalWrite(leftEnable, LOW);
+//  }
+  Serial.println(analogRead(A4));
 }
 
 

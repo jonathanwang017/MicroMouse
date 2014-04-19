@@ -40,7 +40,7 @@ void moveForward() {
   digitalWrite(PIN_MOTOR_2, LOW);
   digitalWrite(PIN_MOTOR_3, HIGH);
   digitalWrite(PIN_MOTOR_4, LOW);
-  delay(215);
+  delay(205);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
   delay(1000);
@@ -54,7 +54,7 @@ void turnRight() {
   digitalWrite(PIN_MOTOR_2, LOW);
   digitalWrite(PIN_MOTOR_3, LOW);
   digitalWrite(PIN_MOTOR_4, HIGH);
-  delay(95);
+  delay(85);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
   delay(1000);
@@ -68,7 +68,7 @@ void turnLeft() {
   digitalWrite(PIN_MOTOR_2, HIGH);
   digitalWrite(PIN_MOTOR_3, HIGH);
   digitalWrite(PIN_MOTOR_4, LOW);
-  delay(95);
+  delay(85);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
   delay(1000);
@@ -82,7 +82,7 @@ void turn180() {
   digitalWrite(PIN_MOTOR_2, HIGH);
   digitalWrite(PIN_MOTOR_3, HIGH);
   digitalWrite(PIN_MOTOR_4, LOW);
-  delay(195);
+  delay(185);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
   delay(1000);

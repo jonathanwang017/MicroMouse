@@ -11,6 +11,7 @@ void setup() {
   initWall();
   initMove();
   initWallDetection();
+  delay(3000);
 }
 
 void loop() {

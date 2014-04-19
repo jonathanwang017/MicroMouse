@@ -51,8 +51,6 @@ void setup() {
   
   moveForward();
   delay(1000);
-  turnRight();
-  delay(1000);
   moveForward();
   
 }

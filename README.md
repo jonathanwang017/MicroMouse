@@ -1,12 +1,10 @@
 MicroMouse
 ==========
 
-This project file contains our program for mouse operations,
-including basic movement as well as search algorithms. 
-Program is written using the Arduino IDE, specifically the
-Teensy 3.1 library.
+IEEE MicroMouse Competition code
+Berkeley 2014
 
-Included is a web file that documents our project - parts,
-construction, electrical, programming, etc.
+Includes algorithm for solving maze
 
-The website can be found at jonathanwang017.github.io/MicroMouse.
+
+Documentation at jonathanwang017.github.io/MicroMouse.
