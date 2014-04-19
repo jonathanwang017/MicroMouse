@@ -14,6 +14,6 @@ extern char walls[MAZE_SIZE][MAZE_SIZE];
 void initWall();
 bool hasKnownWall(int x, int y, int dir);
 bool knownNotWall(int x, int y, int dir);
-bool hasWallAhead();
+bool detectWall(int direction);
 
 #endif // __WALL_H_

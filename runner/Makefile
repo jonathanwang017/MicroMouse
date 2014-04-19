@@ -1,6 +1,6 @@
 SRC_DIR = ../micromouse
 INCLUDEOPTS = -I$(SRC_DIR)
-CXXFLAGS += -DGROUND_TEST
+CXXFLAGS += -DGROUND_TEST -g
 export CXXFLAGS
 TARGETS = init_maze navigation
 

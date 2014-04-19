@@ -40,7 +40,7 @@ void moveForward() {
   digitalWrite(PIN_MOTOR_2, LOW);
   digitalWrite(PIN_MOTOR_3, HIGH);
   digitalWrite(PIN_MOTOR_4, LOW);
-  delay(180);
+  delay(215);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
 }
@@ -79,7 +79,7 @@ void turn180() {
   digitalWrite(PIN_MOTOR_2, HIGH);
   digitalWrite(PIN_MOTOR_3, HIGH);
   digitalWrite(PIN_MOTOR_4, LOW);
-  delay(230);
+  delay(195);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
 }
