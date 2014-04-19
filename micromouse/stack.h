@@ -6,7 +6,7 @@
 #ifndef __STACK_H_
 #define __STACK_H_
 
-#include <stdlib.h> // size_t, abort
+#include <stdlib.h> // size_t, abort, exit
 #ifdef GROUND_TEST
 #include <iostream> // std::cerr
 #else
@@ -18,12 +18,13 @@ const size_t DEFAULT_CAP = 10;
 void panicOOM() {
 #ifdef GROUND_TEST
   std::cerr << "PANIC: Out of memory.\n";
+  abort();
 #else
   if (Serial) {
     Serial.println("PANIC: Out of memory");
   }
+  exit(1); // Since Teensy doesn't have abort()
 #endif
-  abort();
 }
 
 void *xmalloc(size_t size) {
