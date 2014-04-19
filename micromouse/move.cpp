@@ -43,6 +43,7 @@ void moveForward() {
   delay(215);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
+  delay(1000);
 }
 
 // turn 90 degrees right
@@ -56,6 +57,7 @@ void turnRight() {
   delay(95);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
+  delay(1000);
 }
 
 // turn 90 degrees left
@@ -69,6 +71,7 @@ void turnLeft() {
   delay(95);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
+  delay(1000);
 }
 
 // turn 180 degrees
@@ -82,6 +85,7 @@ void turn180() {
   delay(195);
   digitalWrite(PIN_LEFT_ENABLE, LOW);
   digitalWrite(PIN_RIGHT_ENABLE, LOW);
+  delay(1000);
 }
 
 #else // GROUND_TEST
