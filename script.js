@@ -23,6 +23,9 @@ $(document).ready(function() {
     $("#operations_header").click(function() {
         $("#operations_sect").toggle();
     });
+    $("#setup_header").click(function() {
+        $("#setup_sect").toggle();
+    });
     $("#algorithms_header").click(function() {
         $("#algorithms_sect").toggle();
     });

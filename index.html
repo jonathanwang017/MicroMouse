@@ -131,28 +131,44 @@
                 <h2 id = "software_header" class = "sect_header">Software</h2>
             </div>
             <div id = "software_sect">
-                <h3 id = "operations_header" class = "subsect_header">Basic Operation</h3>
+                <h3 id = "operations_header" class = "subsect_header">Basic Operations</h3>
                 <div id = "operations_sect">
-                    <p class = "operations_text">Basic operations include motor ouotput, sensor input, etc.</p>
+                    <p class = "operations_text">Since our encoders had problems, we used timed delays for motion</p>
                     <div id = "operations_subsect_left">
                         <img src = "pics/code_snippet.png">
                     </div>
                     <div id = "operations_subsect_right">
-                        <p><f class = "function">setup()</f> - initialize pins, call initializeGrid()</p>
-                        <p><f class = "function">moveForward()</f> - update cur_x and cur_y, call trackPath()</p>
-                        <p><f class = "function">turnRight(), turnLeft()</f> - turn 90 degrees in said direction</p>
-                        <p><f class = "function">initializeGrid()</f> - create map grid with manhattan distances of each space from goal</p>
-                        <p><f class = "function">trackPath()</f> - adds position to space traversed in path</p>
+                        <p><f class = "function">Moving</f> - moveForward(), turnRight(), turnLeft(), turn180()</p>
+                        <p><f class = "function">initMove()</f> - set up motor pins</p>
+                        <p><f class = "function">initWallDetection()</f> - set up LED sensor pins</p>
+                        <p><f class = "function">checkWall()</f> - determine if there is a wall in front</p>
+                    </div>
+                    <div class = "div_buffer">
+                    </div>
+                </div>
+                <h3 id = "setup_header" class = "subsect_header">Initial Setup</h3>
+                <div id = "setup_sect">
+                    <p class = "setup_text">Create initial maze grid assuming no walls</p>
+                    <div id = "setup_subsect_left">
+                        <img src = "pics/code_snippet.png">
+                    </div>
+                    <div id = "setup_subsect_right">
+                        <p><f class = "function">initWalls()</f> - establish bordering walls</p>
+                        <p><f class = "function">initMaze()</f> - determine Manhattan distances with no walls</p>
                     </div>
                     <div class = "div_buffer">
                     </div>
                 </div>
                 <h3 id = "algorithms_header" class = "subsect_header">Algorithms</h3>
                 <div id = "algorithms_sect">
-                    <p class = "algorithms_text">We are using an implementation of the floodfill algorithm (still figuring it out though).</p>
+                    <p class = "algorithms_text">We are using an implementation of the floodfill algorithm.</p>
                     <div id = "algorithms_subsect_left">
-                        <p class = "algorithms_text">It works sort of like this: </p>
-                        <img src = "pics/zombie_fill.gif">
+                        <p class = "algorithms_text">Outline:</p>
+                        <p class = "algorithms_text">1. Move to smalles space (forward if tie)</p>
+                        <p class = "algorithms_text">2. If wall, then move to next smallest space</p>
+                        <p class = "algorithms_text">3. Update current position and known walls</p>
+                        <p class = "algorithms_text">4. Update all distances if move to larger space</p>
+                        <p class = "algorithms_text">5. Repeat until robot reaches center</p>
                     </div>
                     <div id = "algorithms_subsect_right">
                         <p class = "algorithms_text">In perspective of the MicroMouse maze<br>(starting from bottom left): </p>
