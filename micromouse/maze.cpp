@@ -12,18 +12,24 @@
 #include "utils_and_consts.h"
 #include "wall.h"
 
+/** Mouse's current x coordinate */
 int cur_x = 0;
+/** Mouse's current y coordinate */
 int cur_y = 0;
+/**
+ * The maze array.
+ * maze[x][y] gives the presumed distance from (x, y) to the origin.
+ */
 // Distances range from 0 to 254, so just perfect
 unsigned char maze[MAZE_SIZE][MAZE_SIZE];
 int facing = NORTH;
 
-// calculate manhattan distance between 2 points
+/** calculate manhattan distance between 2 points */
 int manhattanDist(int x1, int y1, int x2, int y2) {
   return abs(x1-x2) + abs(y1-y2);
 }
 
-// create initial maze with default values
+/** create initial maze with default values */
 void initMaze() {
   int m1 = (MAZE_SIZE - 1) / 2;
   int m2 = MAZE_SIZE / 2;
@@ -37,7 +43,7 @@ void initMaze() {
   }
 }
 
-// Returns the coordinates of the neighbor of (x, y) in the direction dir
+/** Returns the coordinates of the neighbor of (x, y) in the direction dir */
 coord getNeighborCoord(int x, int y, int dir) {
   coord ret;
   switch (dir) {
@@ -60,9 +66,11 @@ coord getNeighborCoord(int x, int y, int dir) {
   }
 }
 
-// If there is not a known wall between the cell (x, y) and its neighbor in the
-// direction `dir`, returns the neighbor's distance from the destination.
-// Otherwise returns `INT_MAX`.
+/**
+ * If there is not a known wall between the cell (x, y) and its neighbor in the
+ * direction `dir`, returns the neighbor's distance from the destination.
+ * Otherwise returns `INT_MAX`.
+ */
 int distOfNeighbor(int x, int y, int dir) {
   if (hasKnownWall(x, y, dir)) {
     return INT_MAX;
@@ -71,10 +79,35 @@ int distOfNeighbor(int x, int y, int dir) {
   return maze[neighborCoord.x][neighborCoord.y];
 }
 
-// Update distances. The stack is a stack of squares to process. Other items
-// are added to and removed from the stack routinely. destSq is an array of
-// squares whose distances should be ensured to be 0. If this doesn't matter,
-// you can use null.
+/**
+ * Update distances. The stack is a stack of squares to process. Other items
+ * are added to and removed from the stack routinely. destSq is an array of
+ * squares whose distances should be ensured to be 0. numDestSq is the length
+ * of the destSq array (you can use 0 if you don't have to specially keep
+ * track of destination squares).
+ *
+ * The update distances algorithm goes as follows:
+ * You start with a stack with some coordinates on it. Then:
+ * 1. Pop off the top coordinate.
+ * 2. See if the corresponding entry in the maze is 1 + (the minimum of the
+ *    distances of its neighbors).
+ * 3. If it isn't, then change it to be 1 + (the minimum of the distances
+ *    of its neighbors), and then push its accessible neighbors onto the
+ *    stack.
+ * 4. Repeat until the stack is empty.
+ *
+ * Currently, the code assumes that the mouse only has a front sensor.
+ * Thus it makes the following simplifications:
+ * 1. "accessible" really should mean "accessible before the last time we
+ *    discovered new walls". But since we only have a front sensor right now,
+ *    we actually take it to mean "still accessible right now".
+ * 2. Because of the previous point, numDestSq can be set to 0 except in
+ *    switching destinations, since a destination square will never be pushed
+ *    onto the stack. (We would have processed one of its accessible neighbors
+ *    before that.)
+ * If there are left and right sensors too, we cannot use those simplifications.
+ * See the updateDistancesIfNeeded() function in 32bbe7b for that case.
+ */
 void updateDistances(Stack<coord> &stack, coord destSq[], int numDestSq) {
   static const int dirs[] = {NORTH, SOUTH, EAST, WEST};
   // Now calculate all distances (starting with destination squares)
@@ -109,9 +142,12 @@ void updateDistances(Stack<coord> &stack, coord destSq[], int numDestSq) {
   }
 }
 
-// Finds the direction that minimizes the distance, subject to the following:
-// 1. If there is a tie between going forward and turning, go forward
-// 2. Avoid turning around
+/**
+ * Finds the direction that minimizes the distance, subject to the following:
+ * 1. If there is a tie between going forward and turning, go forward
+ * 2. Avoid turning around
+ * This function does not check for new walls.
+ */
 int minimizingDirection() {
   int forward = facing;
   int right = (facing + 1) % 4;
@@ -133,7 +169,7 @@ int minimizingDirection() {
   }
 }
 
-// Turns the mouse to the direction moveDir
+/** Turns the mouse to the direction moveDir */
 void turnToDirection(int moveDir) {
   int change = moveDir - facing;
   // Coerce into range [-2, 2)
@@ -158,6 +194,12 @@ void turnToDirection(int moveDir) {
   facing = moveDir;
 }
 
+/**
+ * Identifies the neighbor with the minimum distance from the destination,
+ * without checking for new walls, and turns to that direction. If there turns
+ * out to be a wall in that direction, updates the maze distances and starts
+ * over.
+ */
 void turnToMinNeighbor() {
   while (true) {
     int targetDir = minimizingDirection();
@@ -175,7 +217,7 @@ void turnToMinNeighbor() {
   }
 }
 
-// add current location to path
+/** Updates our position after we move */
 void trackPath() {
   switch(facing) {
   case NORTH:
@@ -193,15 +235,17 @@ void trackPath() {
   }
 }
 
-// Make a move in the direction
+/** Makes a move */
 void makeMove() {
   turnToMinNeighbor();
   moveForward();
   trackPath();
 }
 
-// Switches the destination to the center squares and resets the board
-// accordingly.
+/**
+ * Switches the destination to the center squares and resets the board
+ * accordingly.
+ */
 void switchDestinationToCenter() {
   int m1 = (MAZE_SIZE - 1) / 2;
   int m2 = MAZE_SIZE / 2;
@@ -224,7 +268,9 @@ void switchDestinationToCenter() {
   updateDistances(stack, centerSquares, 4);
 }
 
-// Switches the destination to (0, 0) and resets the board accordingly.
+/**
+ * Switches the destination to (0, 0) and resets the board accordingly.
+ */
 void switchDestinationToCorner() {
   // Wipe all distances
   // Fortunately maze is unsigned...

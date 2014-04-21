@@ -32,7 +32,7 @@ void initMove() {
   pinMode(PIN_LED, OUTPUT);
 }
 
-// move forward 1 space
+/** move forward 1 space */
 void moveForward() {
   digitalWrite(PIN_LEFT_ENABLE, HIGH);
   digitalWrite(PIN_RIGHT_ENABLE, HIGH);
@@ -46,7 +46,7 @@ void moveForward() {
   delay(1000);
 }
 
-// turn 90 degrees right
+/** turn 90 degrees right */
 void turnRight() {
   digitalWrite(PIN_LEFT_ENABLE, HIGH);
   digitalWrite(PIN_RIGHT_ENABLE, HIGH);
@@ -74,7 +74,7 @@ void turnLeft() {
   delay(1000);
 }
 
-// turn 180 degrees
+/** turn 180 degrees */
 void turn180() {
   digitalWrite(PIN_LEFT_ENABLE, HIGH);
   digitalWrite(PIN_RIGHT_ENABLE, HIGH);

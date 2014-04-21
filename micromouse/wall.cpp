@@ -8,14 +8,19 @@
 #include "maze.h"
 #include "walldetection.h"
 
-// Format: for each element at index x, y, bit 0 (LSB) is whether we know if
-// there is a wall at (x, y) in the north direction, likewise bit 1 is for 
-// east, bit 2 for south, bit 3 for west. Bit 4 is whether we know if there
-// isn't a wall at (x, y) in the north direction. Bit 5 is ...
+/**
+ * The maze walls
+ * Format: for each element at index x, y, bit 0 (LSB) is whether we know if
+ * there is a wall at (x, y) in the north direction, likewise bit 1 is for 
+ * east, bit 2 for south, bit 3 for west. Bit 4 is whether we know if there
+ * isn't a wall at (x, y) in the north direction. Bit 5 is ...
+ */
 char walls[MAZE_SIZE][MAZE_SIZE] = {0};
 
-// marks that the cell at (x, y) has or doesn't have a wall in the direction
-// dir
+/**
+ * marks that the cell at (x, y) has or doesn't have a wall in the direction
+ * dir
+ */
 void markWall(int x, int y, int dir, bool hasWall) {
   int off = hasWall ? 0 : 4;
   walls[x][y] |= (1 << off << dir);
@@ -43,7 +48,7 @@ void markWall(int x, int y, int dir, bool hasWall) {
   }
 }
 
-// initialize walls at borders of maze and to right of (0, 0)
+/** initialize walls at borders of maze and to right of (0, 0) */
 void initWall() {
   for (int x = 0; x < MAZE_SIZE; x++) {
     markWall(x, MAZE_SIZE - 1, NORTH, true);
@@ -58,17 +63,23 @@ void initWall() {
   markWall(0, 0, EAST, true);
 }
 
-// returns whether we know if there is a wall in the direction dir at (x, y)
+/**
+ * Returns whether we know if there is a wall in the direction dir at (x, y)
+ */
 bool hasKnownWall(int x, int y, int dir) {
   return walls[x][y] & (1 << dir);
 }
 
-// Returns whether we know if there isn't a wall in the direction dir at (x, y)
+/**
+ * Returns whether we know if there isn't a wall in the direction dir at (x, y)
+ */
 bool knownNotWall(int x, int y, int dir) {
   return walls[x][y] & (1 << 4 << dir);
 }
 
-// Returns whether there is a wall ahead of us. Updates the wall table too.
+/**
+ * Returns whether there is a wall ahead of us. Updates the wall table too.
+ */
 bool hasWallAhead() {
   if (hasKnownWall(cur_x, cur_y, facing)) {
     return true;

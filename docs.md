@@ -1,3 +1,36 @@
+Organization of the Code
+========================
+The micromouse code here is split into several modules. There are two basic
+types of modules: high-level modules and drivers. High-level modules implement
+things like the flood-fill code and keeping track of the mouse's location and
+orientation. On the other hand, drivers are concerned with the specifics of
+operating the hardware, such as operating the motors to make the mouse move
+forward one step.
+
+Rough Description of Operation
+==============================
+First, the `setup()` method in the main sketch file, `micromouse.ino`,
+initializes modules which require initialization, and waits 3 seconds before
+starting to run through the maze (so the operator can let go of the mouse).
+Then, control reaches the `loop()` method. The loop method runs a series of
+loops which make the mouse go back and forth through the maze until the battery
+is pulled out or it it otherwise stopped.
+
+Inside each of these loops is a call to the method `makeMove()`. `makeMove()`
+turns to the neighboring cell with the minimum distance to the center of the
+maze, accounting for newly discovered walls in the process. It then moves
+the mouse forward one step and updates its recorded location.
+
+The program code maintains a 16×16 array, called `maze`. The element
+`maze[x][y]` stores how far cell `(x, y)` is from the destination. (The
+destination is either the four center squares or `(0, 0)`, depending on which
+run the mouse is on.) The flood-fill code makes use of this `maze` array to
+decide which square to go to next. Every time a new wall is discovered, the
+distances in `maze` must be updated. (The `updateDistances()` method does this.)
+To help with updating distances, there is a also a similar `wall` array, which
+encodes where we know there are walls, where we know there aren't walls, and
+where we're not sure about.
+
 Module Descriptions
 ===================
 

@@ -8,11 +8,15 @@
 #define __MAZE_H_
 
 const int MAZE_SIZE = 16;
+// Direction constants
 const int NORTH = 0;
 const int EAST = 1;
 const int SOUTH = 2;
 const int WEST = 3;
 
+/**
+ * An (x, y) pair
+ */
 struct coord {
   int x;
   int y;
